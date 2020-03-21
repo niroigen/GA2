@@ -36,5 +36,16 @@ int main() {
 
     unsigned int numTiles = population["0"]["pieces"].asInt();
 
-    cout << numTiles << '\n';
+    for (int i = 0; i < numTiles; i++)
+    {
+        unsigned int x = population["0"]["puzzle"][i][0].asInt();
+        unsigned int y = population["0"]["puzzle"][i][1].asInt();
+        unsigned int l = population["0"]["puzzle"][i][2].asInt();
+        unsigned int w = population["0"]["puzzle"][i][3].asInt();
+
+        unsigned int id = i;
+
+        Tile tile(x,y,l,w,id);
+        printf("%d,%d,%d,%d,%d\n", tile.x, tile.y, tile.l, tile.w, tile.id);
+    }
 }
