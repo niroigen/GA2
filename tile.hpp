@@ -7,6 +7,7 @@ struct Tile
     Tile(unsigned int x, unsigned int y, unsigned int l,
          unsigned int w, unsigned int id) :
          x(x), y(y), l(l), w(w), id(id) {}
+    Tile() {}
 };
 
 #endif

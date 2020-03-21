@@ -36,6 +36,8 @@ int main() {
 
     unsigned int numTiles = population["0"]["pieces"].asInt();
 
+    Tile tiles[numTiles];
+
     for (int i = 0; i < numTiles; i++)
     {
         unsigned int x = population["0"]["puzzle"][i][0].asInt();
@@ -46,6 +48,12 @@ int main() {
         unsigned int id = i;
 
         Tile tile(x,y,l,w,id);
-        printf("%d,%d,%d,%d,%d\n", tile.x, tile.y, tile.l, tile.w, tile.id);
+
+        tiles[i] = tile;
+    }
+
+        for (int i = 0; i < numTiles; i++)
+    {
+        printf("%d,%d,%d,%d,%d\n", tiles[i].x, tiles[i].y, tiles[i].l, tiles[i].w, tiles[i].id);
     }
 }
