@@ -7,8 +7,6 @@
 
 using namespace std;
 
-void createTile(Json::Value &individual);
-
 int main() {
     ifstream ifs("population.json");
     Json::Reader reader;
@@ -30,18 +28,13 @@ int main() {
     population["0"]["width"] = obj["0"]["width"];
     population["0"]["pieces"] = obj["0"]["pieces"];
     
-    createTile(population);
-
     std::ofstream file_id;
     file_id.open("outJsonfromcpp.json");
     Json::StyledWriter styledWriter;
     file_id << styledWriter.write(population);
     file_id.close();
-    
-}
 
-void createTile(Json::Value &individual)
-{
-    unsigned int numPieces = individual["pieces"];
-    cout << numPieces;
+    unsigned int numTiles = population["0"]["pieces"].asInt();
+
+    cout << numTiles << '\n';
 }
