@@ -21,7 +21,7 @@ int main() {
 
     Individual *baseIndividual = createBaseIndividual(numTiles, obj);
 
-    const int NUM_INDIVIDUALS = 3;
+    const int NUM_INDIVIDUALS = 100;
 
     Individual *pop[NUM_INDIVIDUALS];
 
