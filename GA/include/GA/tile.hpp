@@ -10,6 +10,30 @@ struct Tile
          unsigned int w) :
          x(x), y(y), l(l), w(w) {}
     Tile() {}
+    Tile(const Tile& tile)
+    {
+        x = tile.x;
+        y = tile.y;
+        l = tile.l;
+        w = tile.w;
+
+        std::cout << "Tile Copy Constructor"<< std::endl;
+    }
+
+    Tile& operator=(const Tile& tile)
+    {
+        if (this != &tile)
+        {
+            x = tile.x;
+            y = tile.y;
+            l = tile.l;
+            w = tile.w;
+        }
+
+        std::cout << "Tile Copy Assignment Operator"<< std::endl;
+
+        return *this;
+    }
     ~Tile() 
     {
         #if DEBUG

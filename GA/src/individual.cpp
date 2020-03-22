@@ -1,6 +1,6 @@
 #include "GA/individual.hpp"
 
-Individual::Individual(const Tile *tiles, unsigned int size,
+Individual::Individual(Tile *tiles, unsigned int size,
                        unsigned int frameLength, unsigned int frameWidth)
     : tiles(tiles), size(size), frameLength(frameLength), frameWidth(frameWidth)
 {
@@ -14,7 +14,7 @@ Individual::Individual(const Tile *tiles, unsigned int size,
     #endif
 }
 
-Individual::Individual(const Tile *tiles, unsigned int size, const Individual *baseIndividual,
+Individual::Individual(Tile *tiles, unsigned int size, const Individual *baseIndividual,
                        unsigned int frameLength, unsigned int frameWidth)
         : tiles(tiles), size(size), frameLength(frameLength), frameWidth(frameWidth)
 {
@@ -31,6 +31,48 @@ Individual::Individual(const Tile *tiles, unsigned int size, const Individual *b
     #if DEBUG
     std::cout << "Initialized\n";
     #endif
+}
+
+Individual::Individual(const Individual& individual)
+    : size(individual.size), frameLength(individual.frameLength),
+      frameWidth(individual.frameWidth)
+{
+    tiles = new Tile[individual.size];
+
+    for (int i = 0; i < individual.size; i++)
+    {
+        tiles[i] = individual.tiles[i];
+    }
+
+    for (int i = 0; i < individual.size; i++)
+    {
+        indices[i] = individual.indices[i];
+    }
+
+    std::cout << "Individual Copy Constructor"<< std::endl;
+}
+
+Individual& Individual::operator=(const Individual& individual)
+{
+    tiles = new Tile[individual.size];
+
+    for (int i = 0; i < individual.size; i++)
+    {
+        tiles[i] = individual.tiles[i];
+    }
+
+    for (int i = 0; i < individual.size; i++)
+    {
+        indices[i] = individual.indices[i];
+    }
+
+    size = individual.size;
+    frameLength = individual.frameLength;
+    frameWidth = individual.frameWidth;
+
+    std::cout << "Individual Assignment Operator Called"<< std::endl;
+
+    return *this;
 }
 
 bool Individual::isIdxListed(int idx)

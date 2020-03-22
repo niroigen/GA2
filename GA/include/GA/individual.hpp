@@ -6,16 +6,19 @@
 
 struct Individual
 {
-    const Tile *tiles;
-    const unsigned int size, frameLength, frameWidth;
+    Tile *tiles;
+    unsigned int size, frameLength, frameWidth;
     unsigned int *indices = new unsigned int[size];
     float fitness = 0;
 
-    Individual(const Tile *tiles, unsigned int size, 
+    Individual(Tile *tiles, unsigned int size,
                unsigned int frameLength, unsigned int frameWidth);
-    Individual(const Tile *tiles, unsigned int size, const Individual *baseIndividual,
+    Individual(Tile *tiles, unsigned int size, const Individual *baseIndividual,
                unsigned int frameLength, unsigned int frameWidth);
+    Individual(const Individual& individual);
+    Individual& operator=(const Individual& individual);
     ~Individual();
+
 
     bool isIdxListed(int idx);
     
