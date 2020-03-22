@@ -13,4 +13,5 @@ struct GaHelper
     static void evaluateFitness(Individual &individual);
     static void selectParents(Individual **matingPool, Individual **population);
     static void pickRandomIndividuals(Individual **randomIndividuals, Individual **population);
+    static Individual* findBestIndividual(Individual **individuals, int numIndividuals);
 };

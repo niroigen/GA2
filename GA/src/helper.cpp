@@ -54,22 +54,46 @@ void GaHelper::pickRandomIndividuals(Individual **randomIndividuals, Individual 
         int randIdx = distr(eng);
 
         randomIndividuals[i] = population[randIdx];
-        // std::cout << randomIndividuals[i]->fitness << ' ' << population[randIdx]->fitness << '\n';
+
+        #if DEBUG
+        std::cout << randomIndividuals[i]->fitness << ' ' << population[randIdx]->fitness << '\n';
+        #endif
     }
+}
+
+Individual* GaHelper::findBestIndividual(Individual **individuals, int numIndividuals)
+{
+    unsigned int bestIdx = 0;
+    float bestFitness = individuals[0]->fitness;
+    for (int i = 1; i < numIndividuals; i++)
+    {
+        if(individuals[i]->fitness < bestFitness)
+        {
+            bestIdx = i;
+            bestFitness = individuals[i]->fitness;
+        }
+    }
+
+    return individuals[bestIdx];
 }
 
 void GaHelper::selectParents(Individual **matingPool, Individual **population)
 {
-    unsigned int currentMember = 1;
+    unsigned int currentMember = 0;
 
-    while(currentMember <= LAMBDA)
+    while(currentMember < LAMBDA)
     {
         Individual *randomIndividuals[k];
 
         GaHelper::pickRandomIndividuals(randomIndividuals, population);
 
-        // Individual *bestIndividual = findBestIndividual(randomIndividuals);
+        Individual* bestIndividual = GaHelper::findBestIndividual(randomIndividuals, k);
 
+        #if DEBUG
+        std::cout << bestIndividual->fitness << '\n';
+        #endif
+
+        matingPool[currentMember] = bestIndividual;
         currentMember++;
     }
 }
