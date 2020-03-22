@@ -3,6 +3,8 @@
 #include <jsoncpp/json/json.h> // or jsoncpp/json.h , or json/json.h etc.
 #include<jsoncpp/json/writer.h>
 #include<string>
+
+#include "individual.hpp"
 #include "tile.hpp"
 
 using namespace std;
@@ -36,7 +38,7 @@ int main() {
 
     unsigned int numTiles = population["0"]["pieces"].asInt();
 
-    Tile tiles[numTiles];
+    Tile *tiles = new Tile[numTiles];
 
     for (int i = 0; i < numTiles; i++)
     {
@@ -52,8 +54,15 @@ int main() {
         tiles[i] = tile;
     }
 
-        for (int i = 0; i < numTiles; i++)
+    Individual individual(tiles, numTiles);
+
+    for (int i = 0; i < individual.size; i++)
     {
-        printf("%d,%d,%d,%d,%d\n", tiles[i].x, tiles[i].y, tiles[i].l, tiles[i].w, tiles[i].id);
+        printf("%d,%d,%d,%d,%d\n",
+        individual.tiles[i].x,
+        individual.tiles[i].y,
+        individual.tiles[i].l,
+        individual.tiles[i].w,
+        individual.tiles[i].id);
     }
 }
