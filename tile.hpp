@@ -5,11 +5,12 @@
 
 struct Tile
 {
-    unsigned int x, y, l, w, id;
+    unsigned int x, y, l, w;
     Tile(unsigned int x, unsigned int y, unsigned int l,
-         unsigned int w, unsigned int id) :
-         x(x), y(y), l(l), w(w), id(id) {}
+         unsigned int w) :
+         x(x), y(y), l(l), w(w) {}
     Tile() {}
+    ~Tile() {std::cout << "class Tile destroyed\n";}
     friend bool operator==(const Tile& l, const Tile& r)
     {
         return ((l.l == r.l) && (l.w == r.w)) ||

@@ -9,35 +9,54 @@
 
 using namespace std;
 
+Individual* createBaseIndividual(int numTiles, const Json::Value &obj);
+
 int main() {
     ifstream ifs("population.json");
     Json::Reader reader;
     Json::Value obj;
     reader.parse(ifs, obj); // reader can also read strings
-    //cout << "0" << obj["0"]["puzzle"] << endl;
-    Json::FastWriter fastWriter;
 
-    std::string output;
-    for (int i = 0; i < 4; i++){
-        output = fastWriter.write(obj[to_string(i)]["puzzle"]);
-        cout << to_string(i) << output;
-        cout << endl;
+    unsigned int numTiles = obj["0"]["pieces"].asInt();
+
+    Individual *baseIndividual = createBaseIndividual(numTiles, obj);
+
+    const int NUM_INDIVIDUALS = 3;
+
+    Individual *pop[NUM_INDIVIDUALS];
+
+    pop[0] = baseIndividual;
+
+    for (int i = 1; i < NUM_INDIVIDUALS; i++)
+    {
+        Tile *tilesTest = new Tile[numTiles];
+
+        for (int j = 0; j < numTiles; j++)
+        {
+            unsigned int x = obj[to_string(j)]["puzzle"][j][0].asInt();
+            unsigned int y = obj[to_string(j)]["puzzle"][j][1].asInt();
+            unsigned int l = obj[to_string(j)]["puzzle"][j][2].asInt();
+            unsigned int w = obj[to_string(j)]["puzzle"][j][3].asInt();
+
+            tilesTest[j].x = x;
+            tilesTest[j].y = y;
+            tilesTest[j].l = l;
+            tilesTest[j].w = w;
+        }
+
+        pop[i] = new Individual(tilesTest, numTiles, baseIndividual);
     }
 
-    Json::Value population;
-    population["0"]["puzzle"] = obj["0"]["puzzle"];
-    population["0"]["length"] = obj["0"]["length"];
-    population["0"]["width"] = obj["0"]["width"];
-    population["0"]["pieces"] = obj["0"]["pieces"];
-    
-    std::ofstream file_id;
-    file_id.open("outJsonfromcpp.json");
-    Json::StyledWriter styledWriter;
-    file_id << styledWriter.write(population);
-    file_id.close();
+    for (int i = 0; i < NUM_INDIVIDUALS; i++)
+    {
+        delete pop[i];
+    }
 
-    unsigned int numTiles = population["0"]["pieces"].asInt();
+    return 0;
+}
 
+Individual* createBaseIndividual(int numTiles, const Json::Value &obj)
+{
     Tile *tiles = new Tile[numTiles];
 
     for (int i = 0; i < numTiles; i++)
@@ -47,35 +66,11 @@ int main() {
         unsigned int l = obj["0"]["puzzle"][i][2].asInt();
         unsigned int w = obj["0"]["puzzle"][i][3].asInt();
 
-        unsigned int id = i;
-
-        Tile tile(x,y,l,w,id);
-
-        tiles[i] = tile;
+        tiles[i].x = x;
+        tiles[i].y = y;
+        tiles[i].l = l;
+        tiles[i].w = w;
     }
 
-    Individual baseIndividual(tiles, numTiles);
-
-    const int NUM_INDIVIDUALS = 100;
-
-    for (int i = 1; i < NUM_INDIVIDUALS; i++)
-    {
-        Tile *tilesTest = new Tile[numTiles];
-
-        for (int i = 0; i < numTiles; i++)
-        {
-            unsigned int x = obj[to_string(i)]["puzzle"][i][0].asInt();
-            unsigned int y = obj[to_string(i)]["puzzle"][i][1].asInt();
-            unsigned int l = obj[to_string(i)]["puzzle"][i][2].asInt();
-            unsigned int w = obj[to_string(i)]["puzzle"][i][3].asInt();
-
-            unsigned int id = i;
-
-            Tile tile(x,y,l,w,id);
-
-            tilesTest[i] = tile;
-        }
-
-        Individual testIndividual(tilesTest, numTiles, baseIndividual);
-    }
+    return new Individual(tiles, numTiles);
 }

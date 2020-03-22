@@ -8,8 +8,8 @@ struct Individual
 {
     const Tile *tiles;
     const unsigned int size;
-    unsigned int * indices = new unsigned int[size];
-    float fitness;
+    unsigned int *indices = new unsigned int[size];
+    float fitness = 0;
 
     Individual(const Tile *tiles, unsigned int size)
     : tiles(tiles), size(size) 
@@ -19,7 +19,7 @@ struct Individual
             indices[i] = i;
         }
 
-        std::cout << "Initialized\n";
+        std::cout << "Initialized Base\n";
     }
 
     bool isIdxListed(int idx)
@@ -55,11 +55,9 @@ struct Individual
         return -1;
     }
 
-    Individual(const Tile *tiles, unsigned int size, const Individual &baseIndividual)
+    Individual(const Tile *tiles, unsigned int size, const Individual *baseIndividual)
         : tiles(tiles), size(size) 
     {
-        Tile temp;
-
         for(int i = 0; i < size; i++)
         {
             indices[i] = -1;
@@ -67,8 +65,10 @@ struct Individual
 
         for(int i = 0; i < size; i++)
         {
-            indices[i] = findExistingTile(baseIndividual.tiles[i]);
+            indices[i] = findExistingTile(baseIndividual->tiles[i]);
         }
+
+        std::cout << "Initialized\n";
     }
 
     ~Individual()
