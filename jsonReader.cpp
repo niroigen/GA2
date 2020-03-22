@@ -42,10 +42,10 @@ int main() {
 
     for (int i = 0; i < numTiles; i++)
     {
-        unsigned int x = population["0"]["puzzle"][i][0].asInt();
-        unsigned int y = population["0"]["puzzle"][i][1].asInt();
-        unsigned int l = population["0"]["puzzle"][i][2].asInt();
-        unsigned int w = population["0"]["puzzle"][i][3].asInt();
+        unsigned int x = obj["0"]["puzzle"][i][0].asInt();
+        unsigned int y = obj["0"]["puzzle"][i][1].asInt();
+        unsigned int l = obj["0"]["puzzle"][i][2].asInt();
+        unsigned int w = obj["0"]["puzzle"][i][3].asInt();
 
         unsigned int id = i;
 
@@ -54,15 +54,23 @@ int main() {
         tiles[i] = tile;
     }
 
-    Individual individual(tiles, numTiles);
+    Individual baseIndividual(tiles, numTiles);
 
-    for (int i = 0; i < individual.size; i++)
+    Tile *tilesTest = new Tile[numTiles];
+
+    for (int i = 0; i < numTiles; i++)
     {
-        printf("%d,%d,%d,%d,%d\n",
-        individual.tiles[i].x,
-        individual.tiles[i].y,
-        individual.tiles[i].l,
-        individual.tiles[i].w,
-        individual.tiles[i].id);
+        unsigned int x = obj["1"]["puzzle"][i][0].asInt();
+        unsigned int y = obj["1"]["puzzle"][i][1].asInt();
+        unsigned int l = obj["1"]["puzzle"][i][2].asInt();
+        unsigned int w = obj["1"]["puzzle"][i][3].asInt();
+
+        unsigned int id = i;
+
+        Tile tile(x,y,l,w,id);
+
+        tilesTest[i] = tile;
     }
+
+    Individual testIndividual(tilesTest, numTiles, baseIndividual);
 }
