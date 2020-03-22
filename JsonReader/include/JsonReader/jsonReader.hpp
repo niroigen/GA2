@@ -6,8 +6,8 @@
 #include<jsoncpp/json/writer.h>
 #include<string>
 
-#include "individual.hpp"
-#include "tile.hpp"
+#include "GA/individual.hpp"
+#include "GA/tile.hpp"
 
 using namespace std;
 

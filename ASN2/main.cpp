@@ -1,4 +1,4 @@
-#include "jsonReader.h"
+#include "JsonReader/jsonReader.hpp"
 
 const int NUM_INDIVIDUALS = 100;
 

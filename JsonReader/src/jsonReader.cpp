@@ -1,4 +1,4 @@
-#include "jsonReader.h"
+#include "JsonReader/jsonReader.hpp"
 
 void initializePopulation(Individual **population) {
     ifstream ifs("population.json");
