@@ -97,3 +97,29 @@ void GaHelper::selectParents(Individual **matingPool, Individual **population)
         currentMember++;
     }
 }
+
+Individual* GaHelper::getRandomParent(Individual **matingPool)
+{
+    std::random_device rd;
+    std::mt19937 eng(rd());
+    std::uniform_int_distribution<> distr(0, NUM_INDIVIDUALS - 1);
+
+    return matingPool[distr(eng)];
+}
+
+void GaHelper::createOffsprings(Individual **offsprings, Individual **matingPool)
+{
+    int i = 0;
+
+    while(i < LAMBDA)
+    {
+        Individual* parent1 = GaHelper::getRandomParent(matingPool);
+        Individual* parent2 = GaHelper::getRandomParent(matingPool);
+
+        Individual* offspring1 = new Individual(*parent1);
+        Individual* offspring2 = new Individual(*parent2);
+
+        offsprings[i++] = offspring1;
+        offsprings[i++] = offspring2;
+    }
+}

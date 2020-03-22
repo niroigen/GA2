@@ -23,6 +23,9 @@ int main()
     Individual *matingPool[LAMBDA];
     GaHelper::selectParents(matingPool, population);
 
+    Individual *offsprings[LAMBDA];
+    GaHelper::createOffsprings(offsprings, matingPool);
+
     for (int i = 0; i < NUM_INDIVIDUALS; i++)
     {
         delete population[i];
