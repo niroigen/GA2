@@ -18,13 +18,20 @@ void initializePopulation(Individual **population) {
 
         for (int j = 0; j < numTiles; j++)
         {
-            tilesTest[j].x = obj[to_string(j)]["puzzle"][j][0].asInt();
-            tilesTest[j].y = obj[to_string(j)]["puzzle"][j][1].asInt();
-            tilesTest[j].l = obj[to_string(j)]["puzzle"][j][2].asInt();
-            tilesTest[j].w = obj[to_string(j)]["puzzle"][j][3].asInt();
+            tilesTest[j].x = obj[to_string(i)]["puzzle"][j][0].asInt();
+            tilesTest[j].y = obj[to_string(i)]["puzzle"][j][1].asInt();
+            tilesTest[j].l = obj[to_string(i)]["puzzle"][j][2].asInt();
+            tilesTest[j].w = obj[to_string(i)]["puzzle"][j][3].asInt();
         }
 
-        population[i] = new Individual(tilesTest, numTiles, baseIndividual);
+        int frameLength = obj[to_string(i)]["length"].asInt();
+        int frameWidth = obj[to_string(i)]["width"].asInt();
+
+        #if DEBUG
+        cout << frameLength << " " << frameWidth;
+        #endif
+
+        population[i] = new Individual(tilesTest, numTiles, baseIndividual, frameLength, frameWidth);
     }
 }
 
@@ -40,5 +47,8 @@ Individual* createBaseIndividual(int numTiles, const Json::Value &obj)
         tiles[i].w = obj["0"]["puzzle"][i][3].asInt();
     }
 
-    return new Individual(tiles, numTiles);
+    int frameLength = obj["0"]["length"].asInt();
+    int frameWidth = obj["0"]["width"].asInt();
+
+    return new Individual(tiles, numTiles, frameLength, frameWidth);
 }

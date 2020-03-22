@@ -7,12 +7,14 @@
 struct Individual
 {
     const Tile *tiles;
-    const unsigned int size;
+    const unsigned int size, frameLength, frameWidth;
     unsigned int *indices = new unsigned int[size];
     float fitness = 0;
 
-    Individual(const Tile *tiles, unsigned int size);
-    Individual(const Tile *tiles, unsigned int size, const Individual *baseIndividual);
+    Individual(const Tile *tiles, unsigned int size, 
+               unsigned int frameLength, unsigned int frameWidth);
+    Individual(const Tile *tiles, unsigned int size, const Individual *baseIndividual,
+               unsigned int frameLength, unsigned int frameWidth);
     ~Individual();
 
     bool isIdxListed(int idx);

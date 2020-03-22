@@ -1,7 +1,8 @@
 #include "GA/individual.hpp"
 
-Individual::Individual(const Tile *tiles, unsigned int size)
-    : tiles(tiles), size(size) 
+Individual::Individual(const Tile *tiles, unsigned int size,
+                       unsigned int frameLength, unsigned int frameWidth)
+    : tiles(tiles), size(size), frameLength(frameLength), frameWidth(frameWidth)
 {
     for(unsigned int i = 0; i < size; i++)
     {
@@ -10,6 +11,25 @@ Individual::Individual(const Tile *tiles, unsigned int size)
 
     #if DEBUG
     std::cout << "Initialized Base\n" << size << '\n';
+    #endif
+}
+
+Individual::Individual(const Tile *tiles, unsigned int size, const Individual *baseIndividual,
+                       unsigned int frameLength, unsigned int frameWidth)
+        : tiles(tiles), size(size), frameLength(frameLength), frameWidth(frameWidth)
+{
+    for(int i = 0; i < size; i++)
+    {
+        indices[i] = -1;
+    }
+
+    for(int i = 0; i < size; i++)
+    {
+        indices[i] = findExistingTile(baseIndividual->tiles[i]);
+    }
+
+    #if DEBUG
+    std::cout << "Initialized\n";
     #endif
 }
 
@@ -44,24 +64,6 @@ int Individual::findExistingTile(const Tile &tile)
 
     // Should NEVER happen
     return -1;
-}
-
-Individual::Individual(const Tile *tiles, unsigned int size, const Individual *baseIndividual)
-        : tiles(tiles), size(size) 
-{
-    for(int i = 0; i < size; i++)
-    {
-        indices[i] = -1;
-    }
-
-    for(int i = 0; i < size; i++)
-    {
-        indices[i] = findExistingTile(baseIndividual->tiles[i]);
-    }
-
-    #if DEBUG
-    std::cout << "Initialized\n";
-    #endif
 }
 
 Individual::~Individual()
