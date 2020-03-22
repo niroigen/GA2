@@ -8,7 +8,9 @@ Individual::Individual(const Tile *tiles, unsigned int size)
         indices[i] = i;
     }
 
-    std::cout << "Initialized Base\n";
+    #if DEBUG
+    std::cout << "Initialized Base\n" << size << '\n';
+    #endif
 }
 
 bool Individual::isIdxListed(int idx)
@@ -57,7 +59,9 @@ Individual::Individual(const Tile *tiles, unsigned int size, const Individual *b
         indices[i] = findExistingTile(baseIndividual->tiles[i]);
     }
 
+    #if DEBUG
     std::cout << "Initialized\n";
+    #endif
 }
 
 Individual::~Individual()
@@ -66,7 +70,9 @@ Individual::~Individual()
     {
         delete [] tiles;
 
+        #if DEBUG == 1
         std::cout << "Destroying tiles\n";
+        #endif
 
         tiles = nullptr;
     }
@@ -75,10 +81,14 @@ Individual::~Individual()
     {
         delete [] indices;
 
+        #if DEBUG
         std::cout << "Destroying indices\n";
+        #endif
 
         indices = nullptr;
     }
 
+    #if DEBUG
     std::cout << "Destroyed\n";
+    #endif
 }

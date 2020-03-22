@@ -10,7 +10,12 @@ struct Tile
          unsigned int w) :
          x(x), y(y), l(l), w(w) {}
     Tile() {}
-    ~Tile() {std::cout << "class Tile destroyed\n";}
+    ~Tile() 
+    {
+        #if DEBUG
+        std::cout << "class Tile destroyed\n";
+        #endif
+    }
     friend bool operator==(const Tile& l, const Tile& r)
     {
         return ((l.l == r.l) && (l.w == r.w)) ||
