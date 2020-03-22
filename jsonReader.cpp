@@ -1,17 +1,4 @@
-#include <iostream>
-#include <fstream>
-#include <jsoncpp/json/json.h> // or jsoncpp/json.h , or json/json.h etc.
-#include<jsoncpp/json/writer.h>
-#include<string>
-
-#include "individual.hpp"
-#include "tile.hpp"
-
-using namespace std;
-
-const int NUM_INDIVIDUALS = 100;
-
-Individual* createBaseIndividual(int numTiles, const Json::Value &obj);
+#include "jsonReader.h"
 
 void initializePopulation(Individual **population) {
     ifstream ifs("population.json");
@@ -38,17 +25,6 @@ void initializePopulation(Individual **population) {
         }
 
         population[i] = new Individual(tilesTest, numTiles, baseIndividual);
-    }
-}
-
-int main()
-{
-    Individual *population[NUM_INDIVIDUALS];
-    initializePopulation(population);
-
-    for (int i = 0; i < NUM_INDIVIDUALS; i++)
-    {
-        delete population[i];
     }
 }
 
