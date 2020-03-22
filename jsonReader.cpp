@@ -56,21 +56,26 @@ int main() {
 
     Individual baseIndividual(tiles, numTiles);
 
-    Tile *tilesTest = new Tile[numTiles];
+    const int NUM_INDIVIDUALS = 100;
 
-    for (int i = 0; i < numTiles; i++)
+    for (int i = 1; i < NUM_INDIVIDUALS; i++)
     {
-        unsigned int x = obj["1"]["puzzle"][i][0].asInt();
-        unsigned int y = obj["1"]["puzzle"][i][1].asInt();
-        unsigned int l = obj["1"]["puzzle"][i][2].asInt();
-        unsigned int w = obj["1"]["puzzle"][i][3].asInt();
+        Tile *tilesTest = new Tile[numTiles];
 
-        unsigned int id = i;
+        for (int i = 0; i < numTiles; i++)
+        {
+            unsigned int x = obj[to_string(i)]["puzzle"][i][0].asInt();
+            unsigned int y = obj[to_string(i)]["puzzle"][i][1].asInt();
+            unsigned int l = obj[to_string(i)]["puzzle"][i][2].asInt();
+            unsigned int w = obj[to_string(i)]["puzzle"][i][3].asInt();
 
-        Tile tile(x,y,l,w,id);
+            unsigned int id = i;
 
-        tilesTest[i] = tile;
+            Tile tile(x,y,l,w,id);
+
+            tilesTest[i] = tile;
+        }
+
+        Individual testIndividual(tilesTest, numTiles, baseIndividual);
     }
-
-    Individual testIndividual(tilesTest, numTiles, baseIndividual);
 }
