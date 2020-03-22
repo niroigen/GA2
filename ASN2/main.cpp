@@ -4,6 +4,8 @@
 #define DEBUG 0
 
 const int NUM_INDIVIDUALS = 100;
+const int LAMBDA = NUM_INDIVIDUALS;
+const int MU = NUM_INDIVIDUALS;
 
 int main()
 {
