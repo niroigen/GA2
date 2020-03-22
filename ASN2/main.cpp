@@ -14,10 +14,14 @@ int main()
 
     for (int i = 0; i < NUM_INDIVIDUALS; i++)
     {
+        GaHelper::evaluateFitness(*population[i]);
         #if DEBUG
-        std::cout << i << " " << GaHelper::evaluateFitness(*population[i]) << '\n';
+        std::cout << i << " " << population[i]->fitness << '\n';
         #endif
     }
+
+    Individual *matingPool[LAMBDA];
+    GaHelper::selectParents(matingPool, population);
 
     for (int i = 0; i < NUM_INDIVIDUALS; i++)
     {

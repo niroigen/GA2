@@ -1,6 +1,6 @@
 #include "GA/helper.hpp"
 
-float GaHelper::evaluateFitness(Individual &individual)
+void GaHelper::evaluateFitness(Individual &individual)
 {
     int frame[individual.frameWidth][individual.frameLength];
 
@@ -36,5 +36,40 @@ float GaHelper::evaluateFitness(Individual &individual)
         }
     }
 
-    return ((free_space * 1.0)/(individual.frameLength * individual.frameWidth) * 100);
+    individual.fitness = ((free_space * 1.0)/(individual.frameLength * individual.frameWidth) * 100);
+}
+
+void GaHelper::pickRandomIndividuals(Individual **randomIndividuals, Individual **population)
+{
+    std::random_device rd;
+    std::mt19937 eng(rd());
+    std::uniform_int_distribution<> distr(0, NUM_INDIVIDUALS - 1);
+
+    for (int i = 0; i < k; i++)
+    {
+        #if DEBUG
+        std::cout << distr(eng) << '\n';
+        #endif
+
+        int randIdx = distr(eng);
+
+        randomIndividuals[i] = population[randIdx];
+        // std::cout << randomIndividuals[i]->fitness << ' ' << population[randIdx]->fitness << '\n';
+    }
+}
+
+void GaHelper::selectParents(Individual **matingPool, Individual **population)
+{
+    unsigned int currentMember = 1;
+
+    while(currentMember <= LAMBDA)
+    {
+        Individual *randomIndividuals[k];
+
+        GaHelper::pickRandomIndividuals(randomIndividuals, population);
+
+        // Individual *bestIndividual = findBestIndividual(randomIndividuals);
+
+        currentMember++;
+    }
 }
