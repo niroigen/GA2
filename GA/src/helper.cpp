@@ -179,10 +179,6 @@ void GaHelper::createOffsprings(Individual **offsprings, Individual **matingPool
         offsprings[i++] = offspring1;
         offsprings[i++] = offspring2;
     }
-
-    GaHelper::evaluatePopulation(offsprings, LAMBDA);
-
-    std::sort(offsprings, offsprings+LAMBDA, GaHelper::compareIndividual);
 }
 
 void GaHelper::performMutation(Individual *offspring)
