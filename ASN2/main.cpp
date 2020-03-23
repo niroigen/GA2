@@ -6,8 +6,8 @@
 #define DEBUG 0
 
 const int NUM_INDIVIDUALS = 100;
-const int LAMBDA = 6 * NUM_INDIVIDUALS;
-const int MU = NUM_INDIVIDUALS;
+const int MU = 20;
+const int LAMBDA = 6 * MU;
 auto seed = std::chrono::system_clock::now().time_since_epoch().count();
 std::mt19937 eng {seed};
 
@@ -20,14 +20,13 @@ int main()
     initializePopulation(population);
     GaHelper::evaluatePopulation(population);
 
+    Individual* bestIndividualInit = GaHelper::findBestIndividual(population, NUM_INDIVIDUALS);
+    std::cout << bestIndividualInit->fitness << '\n';
+
     for (int gen = 0; gen < 1000; gen++)
     {
         GaHelper::selectParents(matingPool, population);
         GaHelper::createOffsprings(offsprings, matingPool);
-
-        Individual* bestIndividual = GaHelper::findBestIndividual(population, NUM_INDIVIDUALS);
-
-        std::cout << bestIndividual->fitness << '\n';
 
         for (int i = 0; i < NUM_INDIVIDUALS; i++)
         {

@@ -8,7 +8,7 @@
 extern const int NUM_INDIVIDUALS;
 extern const int LAMBDA;
 extern const int MU;
-const int k = 15;
+const int k = 20;
 const float CROSSOVER_RATE = 0.1;
 const float MUTATION_RATE = 0.01;
 
