@@ -178,34 +178,23 @@ void GaHelper::performMutation(Individual *offspring)
     {
         auto r1 = dist(eng);
         auto r2 = dist(eng);
+        auto r3 = dist(eng);
 
         if (r1 <= MUTATION_RATE)
         {
-            #if DEBUG
-            std::cout << "Performing mutation\n";
-            #endif
-
             offspring->tiles[i].x = distX(eng);
-            offspring->tiles[i].y = distY(eng);
-
-            #if DEBUG
-            std::cout << "Performed mutation\n";
-            #endif
         }
 
         if (r2 <= MUTATION_RATE)
         {
-            #if DEBUG
-            std::cout << "Performing mutation\n";
-            #endif
+            offspring->tiles[i].y = distY(eng);
+        }
 
+        if (r3 <= MUTATION_RATE)
+        {
             auto temp = offspring->tiles[i].l;
             offspring->tiles[i].l = offspring->tiles[i].w;
             offspring->tiles[i].w = temp;
-
-            #if DEBUG
-            std::cout << "Performed mutation\n";
-            #endif
         }
     }
 }
