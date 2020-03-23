@@ -51,7 +51,7 @@ void GaHelper::pickRandomIndividuals(Individual **randomIndividuals, Individual 
 {
     std::uniform_int_distribution<> distr(0, NUM_INDIVIDUALS - 1);
 
-    for (int i = 0; i < k; i++)
+    for (int i = 0; i < k[0]; i++)
     {
         #if DEBUG
         std::cout << distr(eng) << '\n';
@@ -87,13 +87,13 @@ void GaHelper::selectParents(Individual **matingPool, Individual **population)
 {
     unsigned int currentMember = 0;
 
-    while(currentMember < MU)
+    while(currentMember < MU[0])
     {
-        Individual *randomIndividuals[k];
+        Individual *randomIndividuals[k[0]];
 
         GaHelper::pickRandomIndividuals(randomIndividuals, population);
 
-        Individual* bestIndividual = GaHelper::findBestIndividual(randomIndividuals, k);
+        Individual* bestIndividual = GaHelper::findBestIndividual(randomIndividuals, k[0]);
 
         #if DEBUG
         std::cout << bestIndividual->fitness << '\n';
@@ -106,7 +106,7 @@ void GaHelper::selectParents(Individual **matingPool, Individual **population)
 
 Individual* GaHelper::getRandomParent(Individual **matingPool)
 {
-    std::uniform_int_distribution<> distr(0, NUM_INDIVIDUALS - 1);
+    std::uniform_int_distribution<> distr(0, MU[0] - 1);
 
     return matingPool[distr(eng)];
 }
@@ -158,7 +158,7 @@ void GaHelper::createOffsprings(Individual **offsprings, Individual **matingPool
     std::uniform_real_distribution<> dist(0, 1);
     std::uniform_int_distribution<> distr(0, matingPool[0]->size - 1);
 
-    while(i < LAMBDA)
+    while(i < LAMBDA[0])
     {
         Individual* parent1 = GaHelper::getRandomParent(matingPool);
         Individual* parent2 = GaHelper::getRandomParent(matingPool);
@@ -168,7 +168,7 @@ void GaHelper::createOffsprings(Individual **offsprings, Individual **matingPool
         Individual* offspring1 = new Individual(*parent1);
         Individual* offspring2 = new Individual(*parent2);
 
-        if (r <= CROSSOVER_RATE)
+        if (r <= CROSSOVER_RATE[0])
         {
             GaHelper::performCrossover(offspring1, offspring2, distr);
         }
@@ -180,9 +180,9 @@ void GaHelper::createOffsprings(Individual **offsprings, Individual **matingPool
         offsprings[i++] = offspring2;
     }
 
-    GaHelper::evaluatePopulation(offsprings, LAMBDA);
+    GaHelper::evaluatePopulation(offsprings, LAMBDA[0]);
 
-    std::sort(offsprings, offsprings+LAMBDA, GaHelper::compareIndividual);
+    std::sort(offsprings, offsprings+LAMBDA[0], GaHelper::compareIndividual);
 }
 
 void GaHelper::performMutation(Individual *offspring)
@@ -197,17 +197,17 @@ void GaHelper::performMutation(Individual *offspring)
         auto r2 = dist(eng);
         auto r3 = dist(eng);
 
-        if (r1 <= MUTATION_RATE)
+        if (r1 <= MUTATION_RATE[curr])
         {
             offspring->tiles[i].x = distX(eng);
         }
 
-        if (r2 <= MUTATION_RATE)
+        if (r2 <= MUTATION_RATE[curr])
         {
             offspring->tiles[i].y = distY(eng);
         }
 
-        if (r3 <= MUTATION_RATE)
+        if (r3 <= MUTATION_RATE[curr])
         {
             auto temp = offspring->tiles[i].l;
             offspring->tiles[i].l = offspring->tiles[i].w;

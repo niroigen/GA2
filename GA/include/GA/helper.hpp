@@ -6,11 +6,12 @@
 #include "GA/individual.hpp"
 
 extern const int NUM_INDIVIDUALS;
-extern const int LAMBDA;
-extern const int MU;
-const int k = 20;
-const float CROSSOVER_RATE = 0.1;
-const float MUTATION_RATE = 0.01;
+extern const int LAMBDA[];
+extern const int MU[];
+extern int curr;
+extern const int k[];
+extern const float CROSSOVER_RATE[];
+extern const float MUTATION_RATE[];
 
 extern std::mt19937 eng;
 
