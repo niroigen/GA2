@@ -17,7 +17,7 @@ extern std::mt19937 eng;
 struct GaHelper
 {
     static void evaluateFitness(Individual &individual);
-    static void evaluatePopulation(Individual **population);
+    static void evaluatePopulation(Individual **population, int size = NUM_INDIVIDUALS);
     static void selectParents(Individual **matingPool, Individual **population);
     static void pickRandomIndividuals(Individual **randomIndividuals, Individual **population);
     static void createOffsprings(Individual **offsprings, Individual **matingPool);
