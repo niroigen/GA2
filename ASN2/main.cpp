@@ -4,6 +4,7 @@
 #include "GA/helper.hpp"
 
 #define DEBUG 0
+#define PARAMETER_TUNING 0
 
 const int NUM_INDIVIDUALS = 100;
 const int MU = 75;
@@ -22,42 +23,60 @@ int main()
     Individual *matingPool[MU];
     Individual *offsprings[LAMBDA];
 
-    initializePopulation(population);
-    GaHelper::evaluatePopulation(population);
-
-    Individual* bestIndividualInit = GaHelper::findBestIndividual(population, NUM_INDIVIDUALS);
-    std::cout << bestIndividualInit->fitness << '\n';
-
-    for (; generation < 1000; generation++)
+    #if PARAMETER_TUNING
+    for (int it = 0; it < 10; it++)
     {
-        // Selecting parents for next generation
-        GaHelper::selectParents(matingPool, population);
+    #endif
 
-        // Creating offsprings off of the potential parents
-        GaHelper::createOffsprings(offsprings, matingPool);
+        initializePopulation(population);
+        GaHelper::evaluatePopulation(population);
 
-        // Evaluating their fitness level
-        GaHelper::evaluatePopulation(offsprings, LAMBDA);
+        #if DEBUG
+        Individual* bestIndividualInit = GaHelper::findBestIndividual(population, NUM_INDIVIDUALS);
+        std::cout << bestIndividualInit->fitness << '\n';
+        #endif
 
-        // Freeing the population
+        for (generation = 0; generation < 1000; generation++)
+        {
+            // Selecting parents for next generation
+            GaHelper::selectParents(matingPool, population);
+
+            // Creating offsprings off of the potential parents
+            GaHelper::createOffsprings(offsprings, matingPool);
+
+            // Evaluating their fitness level
+            GaHelper::evaluatePopulation(offsprings, LAMBDA);
+
+            // Freeing the population
+            freePopulation(population);
+
+            // Sorting the by fitness
+            std::sort(offsprings, offsprings+LAMBDA, GaHelper::compareIndividual);
+
+            // Replace the population with NUM_INDIVIDUAL's best offspring
+            replacePopulation(population, offsprings);
+
+            // Freeing the offspring that will no longer be used
+            freeOffsprings(offsprings);
+
+            #if DEBUG
+            Individual* bestIndividualInit = population[0];
+            std::cout << bestIndividualInit->fitness << '\n';
+            #endif
+        }
+
+        Individual* bestIndividual = GaHelper::findBestIndividual(population, NUM_INDIVIDUALS);
+        std::cout << bestIndividual->fitness << ',' << std::flush;
+
+        #if !PARAMETER_TUNING
+        outputBestIndividual(bestIndividual);
+        #endif
+
         freePopulation(population);
 
-        // Sorting the by fitness
-        std::sort(offsprings, offsprings+LAMBDA, GaHelper::compareIndividual);
-
-        // Replace the population with NUM_INDIVIDUAL's best offspring
-        replacePopulation(population, offsprings);
-
-        // Freeing the offspring that will no longer be used
-        freeOffsprings(offsprings);
+    #if PARAMETER_TUNING
     }
-
-    Individual* bestIndividual = GaHelper::findBestIndividual(population, NUM_INDIVIDUALS);
-    std::cout << bestIndividual->fitness << '\n';
-
-    outputBestIndividual(bestIndividual);
-
-    freePopulation(population);
+    #endif
 }
 
 void freePopulation(Individual **population)

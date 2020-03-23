@@ -115,7 +115,7 @@ Individual* GaHelper::getRandomParent(Individual **matingPool)
 void GaHelper::performCrossover(Individual *offspring1, Individual *offspring2,
                                 std::uniform_int_distribution<>& distr)
 {
-    twoPointCrossover(offspring1, offspring2, distr);
+    uniformCrossover(offspring1, offspring2, distr);
 }
 
 bool GaHelper::compareIndividual(const Individual* i1, const Individual* i2)
