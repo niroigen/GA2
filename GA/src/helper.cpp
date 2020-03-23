@@ -176,9 +176,10 @@ void GaHelper::performMutation(Individual *offspring)
 
     for (int i = 0; i < offspring->size; i++)
     {
-        auto r = dist(eng);
+        auto r1 = dist(eng);
+        auto r2 = dist(eng);
 
-        if (r <= MUTATION_RATE)
+        if (r1 <= MUTATION_RATE)
         {
             #if DEBUG
             std::cout << "Performing mutation\n";
@@ -187,7 +188,17 @@ void GaHelper::performMutation(Individual *offspring)
             offspring->tiles[i].x = distX(eng);
             offspring->tiles[i].y = distY(eng);
 
-            // TODO: might have to change this to another kind of mutation
+            #if DEBUG
+            std::cout << "Performed mutation\n";
+            #endif
+        }
+
+        if (r2 <= MUTATION_RATE)
+        {
+            #if DEBUG
+            std::cout << "Performing mutation\n";
+            #endif
+
             auto temp = offspring->tiles[i].l;
             offspring->tiles[i].l = offspring->tiles[i].w;
             offspring->tiles[i].w = temp;
