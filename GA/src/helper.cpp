@@ -106,7 +106,7 @@ void GaHelper::selectParents(Individual **matingPool, Individual **population)
 
 Individual* GaHelper::getRandomParent(Individual **matingPool)
 {
-    std::uniform_int_distribution<> distr(0, NUM_INDIVIDUALS - 1);
+    std::uniform_int_distribution<> distr(0, MU - 1);
 
     return matingPool[distr(eng)];
 }

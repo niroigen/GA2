@@ -6,7 +6,7 @@
 #define DEBUG 0
 
 const int NUM_INDIVIDUALS = 100;
-const int MU = 20;
+const int MU = 75;
 const int LAMBDA = 6 * MU;
 auto seed = std::chrono::system_clock::now().time_since_epoch().count();
 std::mt19937 eng {seed};

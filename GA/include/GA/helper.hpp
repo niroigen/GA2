@@ -8,9 +8,9 @@
 extern const int NUM_INDIVIDUALS;
 extern const int LAMBDA;
 extern const int MU;
-const int k = 20;
-const float CROSSOVER_RATE = 0.1;
-const float MUTATION_RATE = 0.01;
+const int k = 65;
+const float CROSSOVER_RATE = 0.65;
+const float MUTATION_RATE = 0.05;
 
 extern std::mt19937 eng;
 
