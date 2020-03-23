@@ -17,7 +17,9 @@ struct Tile
         l = tile.l;
         w = tile.w;
 
+        #if DEBUG
         std::cout << "Tile Copy Constructor"<< std::endl;
+        #endif
     }
 
     Tile& operator=(const Tile& tile)
@@ -30,7 +32,9 @@ struct Tile
             w = tile.w;
         }
 
+        #if DEBUG
         std::cout << "Tile Copy Assignment Operator"<< std::endl;
+        #endif
 
         return *this;
     }
