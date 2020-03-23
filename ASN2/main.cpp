@@ -13,21 +13,38 @@ std::mt19937 eng {seed};
 int main()
 {
     Individual *population[NUM_INDIVIDUALS];
+    Individual *matingPool[LAMBDA];
+    Individual *offsprings[LAMBDA];
+
     initializePopulation(population);
 
-    for (int i = 0; i < NUM_INDIVIDUALS; i++)
+    for (int gen = 0; gen < 1000; gen++)
     {
-        GaHelper::evaluateFitness(*population[i]);
-        #if DEBUG
-        std::cout << i << " " << population[i]->fitness << '\n';
-        #endif
+        for (int i = 0; i < NUM_INDIVIDUALS; i++)
+        {
+            GaHelper::evaluateFitness(*population[i]);
+            #if DEBUG
+            std::cout << i << " " << population[i]->fitness << '\n';
+            #endif
+        }
+
+        GaHelper::selectParents(matingPool, population);
+        GaHelper::createOffsprings(offsprings, matingPool);
+
+        Individual* bestIndividual = GaHelper::findBestIndividual(population, NUM_INDIVIDUALS);
+
+        std::cout << bestIndividual->fitness << '\n';
+
+        for (int i = 0; i < NUM_INDIVIDUALS; i++)
+        {
+            delete population[i];
+        }
+
+        for (int i = 0; i < NUM_INDIVIDUALS; i++)
+        {
+            population[i] = offsprings[i];
+        }
     }
-
-    Individual *matingPool[LAMBDA];
-    GaHelper::selectParents(matingPool, population);
-
-    Individual *offsprings[LAMBDA];
-    GaHelper::createOffsprings(offsprings, matingPool);
 
     for (int i = 0; i < NUM_INDIVIDUALS; i++)
     {
