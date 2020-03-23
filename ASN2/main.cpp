@@ -57,7 +57,7 @@ int main()
             std::sort(offsprings, offsprings+LAMBDA, GaHelper::compareIndividual);
 
             // Replace the population with NUM_INDIVIDUAL's best offspring
-            replacePopulation(population, offsprings);
+            GaHelper::survivorSelection(population, offsprings);
 
             // Freeing the offspring that will no longer be used
             freeOffsprings(offsprings);
@@ -87,19 +87,6 @@ void freePopulation(Individual **population)
     for (int i = 0; i < NUM_INDIVIDUALS; i++)
     {
         delete population[i];
-    }
-}
-
-void replacePopulation(Individual **population, Individual **offsprings)
-{
-    int numToReplace = NUM_INDIVIDUALS;
-
-    if (LAMBDA < NUM_INDIVIDUALS) {
-        numToReplace = LAMBDA;
-    }
-    for (int i = NUM_INDIVIDUALS - 1; i > (NUM_INDIVIDUALS - 1) - numToReplace; i--)
-    {
-        population[i] = offsprings[i];
     }
 }
 

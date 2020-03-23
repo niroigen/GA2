@@ -8,6 +8,7 @@
 #include "GA/mutation.hpp"
 #include "GA/fitness.hpp"
 #include "GA/parent.hpp"
+#include "GA/survivor.hpp"
 
 extern const int NUM_INDIVIDUALS;
 extern const int LAMBDA;
@@ -25,6 +26,7 @@ struct GaHelper
     static void selectParents(Individual **matingPool, Individual **population);
     static void pickRandomIndividuals(Individual **randomIndividuals, Individual **population);
     static void createOffsprings(Individual **offsprings, Individual **matingPool);
+    static void survivorSelection(Individual **population, Individual **offsprings);
     static Individual* getRandomParent(Individual **matingPool);
     static Individual* findBestIndividual(Individual **individuals, int numIndividuals);
     static void performCrossover(Individual *offspring1, Individual *offspring2, std::uniform_int_distribution<>& distr);

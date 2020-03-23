@@ -13,6 +13,11 @@ void GaHelper::evaluateFitness(Individual &individual)
     defaultFitnessFunction(individual);
 }
 
+void GaHelper::survivorSelection(Individual **population, Individual **offsprings)
+{
+    replacePopulation(population, offsprings);
+}
+
 void GaHelper::pickRandomIndividuals(Individual **randomIndividuals, Individual **population)
 {
     std::uniform_int_distribution<> distr(0, NUM_INDIVIDUALS - 1);
