@@ -9,6 +9,9 @@
 const int NUM_INDIVIDUALS = 100;
 const int MU = 75;
 const int LAMBDA = 6 * MU;
+const int k = 65;
+const float CROSSOVER_RATE = 0.65;
+const float MUTATION_RATE = 0.05;
 auto seed = std::chrono::system_clock::now().time_since_epoch().count();
 std::mt19937 eng {seed};
 int generation;
