@@ -3,4 +3,4 @@ project(genetic)
 
 add_subdirectory(ASN2)
 add_subdirectory(GA)
-add_subdirectory(JsonReader)
+add_subdirectory(Json)

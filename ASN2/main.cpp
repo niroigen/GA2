@@ -1,5 +1,6 @@
 #include <chrono>
-#include "JsonReader/jsonReader.hpp"
+#include "Json/jsonReader.hpp"
+#include "Json/jsonWriter.hpp"
 #include "GA/helper.hpp"
 
 #define DEBUG 0
@@ -45,6 +46,11 @@ int main()
             population[i] = offsprings[i];
         }
     }
+
+    Individual* bestIndividual = GaHelper::findBestIndividual(population, NUM_INDIVIDUALS);
+    std::cout << bestIndividual->fitness << '\n';
+
+    outputBestIndividual(bestIndividual);
 
     for (int i = 0; i < NUM_INDIVIDUALS; i++)
     {
