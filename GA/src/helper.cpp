@@ -125,9 +125,6 @@ void GaHelper::performCrossover(Individual *offspring1, Individual *offspring2,
     Tile& tile1 = offspring1->tiles[offspring1->indices[startIdx]];
     Tile& tile2 = offspring2->tiles[offspring2->indices[startIdx]];
 
-    std::cout << tile1.x << ' ' << tile1.y << ' ' << tile1.l << ' ' << tile1.w << '\n';
-    std::cout << tile2.x << ' ' << tile2.y << ' ' << tile2.l << ' ' << tile2.w << '\n';
-
     for (int i = startIdx; i <= endIdx; i++)
     {
         int tempX = offspring1->tiles[offspring1->indices[i]].x;
@@ -139,9 +136,6 @@ void GaHelper::performCrossover(Individual *offspring1, Individual *offspring2,
         offspring1->tiles[offspring1->indices[i]].y = offspring2->tiles[offspring2->indices[i]].y;
         offspring2->tiles[offspring2->indices[i]].y = tempY;;
     }
-
-    std::cout << tile1.x << ' ' << tile1.y << ' ' << tile1.l << ' ' << tile1.w << '\n';
-    std::cout << tile2.x << ' ' << tile2.y << ' ' << tile2.l << ' ' << tile2.w << '\n';
 }
 
 void GaHelper::createOffsprings(Individual **offsprings, Individual **matingPool)
@@ -166,7 +160,41 @@ void GaHelper::createOffsprings(Individual **offsprings, Individual **matingPool
             GaHelper::performCrossover(offspring1, offspring2, distr);
         }
 
+        GaHelper::performMutation(offspring1);
+        GaHelper::performMutation(offspring2);
+
         offsprings[i++] = offspring1;
         offsprings[i++] = offspring2;
+    }
+}
+
+void GaHelper::performMutation(Individual *offspring)
+{
+    std::uniform_real_distribution<> dist(0, 1);
+    std::uniform_real_distribution<> distX(0, offspring->frameLength);
+    std::uniform_real_distribution<> distY(0, offspring->frameWidth);
+
+    for (int i = 0; i < offspring->size; i++)
+    {
+        auto r = dist(eng);
+
+        if (r <= MUTATION_RATE)
+        {
+            #if DEBUG
+            std::cout << "Performing mutation\n";
+            #endif
+
+            offspring->tiles[i].x = distX(eng);
+            offspring->tiles[i].y = distY(eng);
+
+            // TODO: might have to change this to another kind of mutation
+            auto temp = offspring->tiles[i].l;
+            offspring->tiles[i].l = offspring->tiles[i].w;
+            offspring->tiles[i].w = temp;
+
+            #if DEBUG
+            std::cout << "Performed mutation\n";
+            #endif
+        }
     }
 }
