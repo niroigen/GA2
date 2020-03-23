@@ -1,7 +1,4 @@
 #include "GA/helper.hpp"
-#include "GA/crossover.hpp"
-#include "GA/mutation.hpp"
-#include "GA/fitness.hpp"
 
 void GaHelper::evaluatePopulation(Individual **population, int size)
 {
@@ -54,23 +51,7 @@ Individual* GaHelper::findBestIndividual(Individual **individuals, int numIndivi
 
 void GaHelper::selectParents(Individual **matingPool, Individual **population)
 {
-    unsigned int currentMember = 0;
-
-    while(currentMember < MU)
-    {
-        Individual *randomIndividuals[k];
-
-        GaHelper::pickRandomIndividuals(randomIndividuals, population);
-
-        Individual* bestIndividual = GaHelper::findBestIndividual(randomIndividuals, k);
-
-        #if DEBUG
-        std::cout << bestIndividual->fitness << '\n';
-        #endif
-
-        matingPool[currentMember] = bestIndividual;
-        currentMember++;
-    }
+    tournamentSelection(matingPool, population, GaHelper::findBestIndividual, GaHelper::pickRandomIndividuals);
 }
 
 Individual* GaHelper::getRandomParent(Individual **matingPool)

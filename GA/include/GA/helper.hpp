@@ -4,6 +4,10 @@
 #include <random>
 #include <algorithm>
 #include "GA/individual.hpp"
+#include "GA/crossover.hpp"
+#include "GA/mutation.hpp"
+#include "GA/fitness.hpp"
+#include "GA/parent.hpp"
 
 extern const int NUM_INDIVIDUALS;
 extern const int LAMBDA;
