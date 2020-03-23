@@ -10,6 +10,7 @@ const int MU = 75;
 const int LAMBDA = 6 * MU;
 auto seed = std::chrono::system_clock::now().time_since_epoch().count();
 std::mt19937 eng {seed};
+int generation = 0;
 
 void freePopulation(Individual **population);
 void freeOffsprings(Individual **offsprings);
@@ -27,7 +28,7 @@ int main()
     Individual* bestIndividualInit = GaHelper::findBestIndividual(population, NUM_INDIVIDUALS);
     std::cout << bestIndividualInit->fitness << '\n';
 
-    for (int gen = 0; gen < 1000; gen++)
+    for (; generation < 1000; generation++)
     {
         // Selecting parents for next generation
         GaHelper::selectParents(matingPool, population);
