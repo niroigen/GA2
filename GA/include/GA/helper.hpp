@@ -2,11 +2,13 @@
 
 #include <iostream>
 #include <random>
+#include <algorithm>
 #include "GA/individual.hpp"
 
 extern const int NUM_INDIVIDUALS;
 extern const int LAMBDA;
-const int k = 5;
+extern const int MU;
+const int k = 15;
 const float CROSSOVER_RATE = 0.1;
 const float MUTATION_RATE = 0.01;
 
@@ -22,4 +24,5 @@ struct GaHelper
     static Individual* findBestIndividual(Individual **individuals, int numIndividuals);
     static void performCrossover(Individual *offspring1, Individual *offspring2, std::uniform_int_distribution<>& distr);
     static void performMutation(Individual *offspring);
+    static bool compareIndividual(const Individual* i1, const Individual* i2);
 };

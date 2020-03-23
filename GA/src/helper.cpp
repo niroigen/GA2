@@ -79,7 +79,7 @@ void GaHelper::selectParents(Individual **matingPool, Individual **population)
 {
     unsigned int currentMember = 0;
 
-    while(currentMember < LAMBDA)
+    while(currentMember < MU)
     {
         Individual *randomIndividuals[k];
 
@@ -138,6 +138,11 @@ void GaHelper::performCrossover(Individual *offspring1, Individual *offspring2,
     }
 }
 
+bool GaHelper::compareIndividual(const Individual* i1, const Individual* i2)
+{
+    return i1->fitness < i2->fitness;
+}
+
 void GaHelper::createOffsprings(Individual **offsprings, Individual **matingPool)
 {
     int i = 0;
@@ -166,6 +171,13 @@ void GaHelper::createOffsprings(Individual **offsprings, Individual **matingPool
         offsprings[i++] = offspring1;
         offsprings[i++] = offspring2;
     }
+
+    for (int i = 0; i < LAMBDA; i++)
+    {
+        GaHelper::evaluateFitness(*offsprings[i]);
+    }
+
+    std::sort(offsprings, offsprings+LAMBDA, GaHelper::compareIndividual);
 }
 
 void GaHelper::performMutation(Individual *offspring)
