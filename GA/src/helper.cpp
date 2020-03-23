@@ -1,4 +1,5 @@
 #include "GA/helper.hpp"
+#include "GA/crossover.hpp"
 
 void GaHelper::evaluatePopulation(Individual **population, int size)
 {
@@ -114,36 +115,7 @@ Individual* GaHelper::getRandomParent(Individual **matingPool)
 void GaHelper::performCrossover(Individual *offspring1, Individual *offspring2,
                                 std::uniform_int_distribution<>& distr)
 {
-    int r1, r2;
-
-    do
-    {
-        r1 = distr(eng);
-        r2 = distr(eng);
-    } while(r1 == r2);
-
-    int startIdx = r1, endIdx = r2;
-
-    if (r2 < r1)
-    {
-        startIdx = r2;
-        endIdx = r1;
-    }
-
-    Tile& tile1 = offspring1->tiles[offspring1->indices[startIdx]];
-    Tile& tile2 = offspring2->tiles[offspring2->indices[startIdx]];
-
-    for (int i = startIdx; i <= endIdx; i++)
-    {
-        int tempX = offspring1->tiles[offspring1->indices[i]].x;
-        int tempY = offspring1->tiles[offspring1->indices[i]].y;
-
-        offspring1->tiles[offspring1->indices[i]].x = offspring2->tiles[offspring2->indices[i]].x;
-        offspring2->tiles[offspring2->indices[i]].x = tempX;
-
-        offspring1->tiles[offspring1->indices[i]].y = offspring2->tiles[offspring2->indices[i]].y;
-        offspring2->tiles[offspring2->indices[i]].y = tempY;;
-    }
+    twoPointCrossover(offspring1, offspring2, distr);
 }
 
 bool GaHelper::compareIndividual(const Individual* i1, const Individual* i2)
