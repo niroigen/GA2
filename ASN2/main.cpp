@@ -45,7 +45,6 @@ int main()
         }
     }
 
-
     GaHelper::evaluatePopulation(population);
 
     Individual* bestIndividual = GaHelper::findBestIndividual(population, NUM_INDIVIDUALS);
