@@ -1,5 +1,13 @@
 #include "GA/helper.hpp"
 
+void GaHelper::evaluatePopulation(Individual **population)
+{
+    for (int i = 0; i < NUM_INDIVIDUALS; i++)
+    {
+        GaHelper::evaluateFitness(*population[i]);
+    }
+}
+
 void GaHelper::evaluateFitness(Individual &individual)
 {
     int frame[individual.frameWidth][individual.frameLength];
@@ -172,10 +180,7 @@ void GaHelper::createOffsprings(Individual **offsprings, Individual **matingPool
         offsprings[i++] = offspring2;
     }
 
-    for (int i = 0; i < LAMBDA; i++)
-    {
-        GaHelper::evaluateFitness(*offsprings[i]);
-    }
+    GaHelper::evaluatePopulation(offsprings);
 
     std::sort(offsprings, offsprings+LAMBDA, GaHelper::compareIndividual);
 }

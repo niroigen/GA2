@@ -18,16 +18,9 @@ int main()
     Individual *offsprings[LAMBDA];
 
     initializePopulation(population);
+    GaHelper::evaluatePopulation(population);
 
-    for (int i = 0; i < NUM_INDIVIDUALS; i++)
-    {
-        GaHelper::evaluateFitness(*population[i]);
-        #if DEBUG
-        std::cout << i << " " << population[i]->fitness << '\n';
-        #endif
-    }
-
-    for (int gen = 0; gen < 100; gen++)
+    for (int gen = 0; gen < 1000; gen++)
     {
         GaHelper::selectParents(matingPool, population);
         GaHelper::createOffsprings(offsprings, matingPool);
