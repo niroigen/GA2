@@ -41,8 +41,6 @@ void GaHelper::evaluateFitness(Individual &individual)
 
 void GaHelper::pickRandomIndividuals(Individual **randomIndividuals, Individual **population)
 {
-    std::random_device rd;
-    std::mt19937 eng(rd());
     std::uniform_int_distribution<> distr(0, NUM_INDIVIDUALS - 1);
 
     for (int i = 0; i < k; i++)
@@ -100,24 +98,73 @@ void GaHelper::selectParents(Individual **matingPool, Individual **population)
 
 Individual* GaHelper::getRandomParent(Individual **matingPool)
 {
-    std::random_device rd;
-    std::mt19937 eng(rd());
     std::uniform_int_distribution<> distr(0, NUM_INDIVIDUALS - 1);
 
     return matingPool[distr(eng)];
+}
+
+void GaHelper::performCrossover(Individual *offspring1, Individual *offspring2,
+                                std::uniform_int_distribution<>& distr)
+{
+    int r1, r2;
+
+    do
+    {
+        r1 = distr(eng);
+        r2 = distr(eng);
+    } while(r1 == r2);
+
+    int startIdx = r1, endIdx = r2;
+
+    if (r2 < r1)
+    {
+        startIdx = r2;
+        endIdx = r1;
+    }
+
+    Tile& tile1 = offspring1->tiles[offspring1->indices[startIdx]];
+    Tile& tile2 = offspring2->tiles[offspring2->indices[startIdx]];
+
+    std::cout << tile1.x << ' ' << tile1.y << ' ' << tile1.l << ' ' << tile1.w << '\n';
+    std::cout << tile2.x << ' ' << tile2.y << ' ' << tile2.l << ' ' << tile2.w << '\n';
+
+    for (int i = startIdx; i <= endIdx; i++)
+    {
+        int tempX = offspring1->tiles[offspring1->indices[i]].x;
+        int tempY = offspring1->tiles[offspring1->indices[i]].y;
+
+        offspring1->tiles[offspring1->indices[i]].x = offspring2->tiles[offspring2->indices[i]].x;
+        offspring2->tiles[offspring2->indices[i]].x = tempX;
+
+        offspring1->tiles[offspring1->indices[i]].y = offspring2->tiles[offspring2->indices[i]].y;
+        offspring2->tiles[offspring2->indices[i]].y = tempY;;
+    }
+
+    std::cout << tile1.x << ' ' << tile1.y << ' ' << tile1.l << ' ' << tile1.w << '\n';
+    std::cout << tile2.x << ' ' << tile2.y << ' ' << tile2.l << ' ' << tile2.w << '\n';
 }
 
 void GaHelper::createOffsprings(Individual **offsprings, Individual **matingPool)
 {
     int i = 0;
 
+    std::uniform_real_distribution<> dist(0, 1);
+    std::uniform_int_distribution<> distr(0, matingPool[0]->size - 1);
+
     while(i < LAMBDA)
     {
         Individual* parent1 = GaHelper::getRandomParent(matingPool);
         Individual* parent2 = GaHelper::getRandomParent(matingPool);
 
+        float r = dist(eng);
+
         Individual* offspring1 = new Individual(*parent1);
         Individual* offspring2 = new Individual(*parent2);
+
+        if (r <= CROSSOVER_RATE)
+        {
+            GaHelper::performCrossover(offspring1, offspring2, distr);
+        }
 
         offsprings[i++] = offspring1;
         offsprings[i++] = offspring2;

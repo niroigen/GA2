@@ -1,3 +1,4 @@
+#include <chrono>
 #include "JsonReader/jsonReader.hpp"
 #include "GA/helper.hpp"
 
@@ -6,6 +7,8 @@
 const int NUM_INDIVIDUALS = 100;
 const int LAMBDA = NUM_INDIVIDUALS;
 const int MU = NUM_INDIVIDUALS;
+auto seed = std::chrono::system_clock::now().time_since_epoch().count();
+std::mt19937 eng {seed};
 
 int main()
 {

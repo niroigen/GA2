@@ -49,7 +49,9 @@ Individual::Individual(const Individual& individual)
         indices[i] = individual.indices[i];
     }
 
+    #if DEBUG
     std::cout << "Individual Copy Constructor"<< std::endl;
+    #endif
 }
 
 Individual& Individual::operator=(const Individual& individual)
@@ -70,7 +72,9 @@ Individual& Individual::operator=(const Individual& individual)
     frameLength = individual.frameLength;
     frameWidth = individual.frameWidth;
 
+    #if DEBUG
     std::cout << "Individual Assignment Operator Called"<< std::endl;
+    #endif
 
     return *this;
 }
