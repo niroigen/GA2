@@ -11,6 +11,7 @@ struct Individual
     unsigned int *indices = new unsigned int[size];
     float fitness = 0;
 
+    Individual() {}
     Individual(Tile *tiles, unsigned int size,
                unsigned int frameLength, unsigned int frameWidth);
     Individual(Tile *tiles, unsigned int size, const Individual *baseIndividual,

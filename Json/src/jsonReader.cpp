@@ -1,6 +1,6 @@
 #include "Json/jsonReader.hpp"
 
-void initializePopulation(Individual **population) {
+void initializePopulation(Individual** population) {
     ifstream ifs("population.json");
     Json::Reader reader;
     Json::Value obj;

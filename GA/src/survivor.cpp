@@ -1,6 +1,6 @@
 #include "GA/survivor.hpp"
 
-void replacePopulation(Individual **population, Individual **offsprings)
+void replacePopulation(Individual** population, Individual** offsprings, const int LAMBDA)
 {
     int numToReplace = NUM_INDIVIDUALS;
 

@@ -1,24 +1,32 @@
 #include "GA/helper.hpp"
 
-void GaHelper::evaluatePopulation(Individual **population, int size)
+#define DEBUG_MODE 1
+
+#if DEBUG_MODE
+#define DEBUG(x) std::cout << x << std::endl;
+#else
+#define DEBUG(x)
+#endif
+
+void GaHelper::evaluatePopulation(Individual** population, int size)
 {
     for (int i = 0; i < size; i++)
     {
-        GaHelper::evaluateFitness(*population[i]);
+        evaluateFitness(population[i]);
     }
 }
 
-void GaHelper::evaluateFitness(Individual &individual)
+void GaHelper::evaluateFitness(Individual* individual)
 {
     defaultFitnessFunction(individual);
 }
 
-void GaHelper::survivorSelection(Individual **population, Individual **offsprings)
+void GaHelper::survivorSelection(Individual** population, Individual** offsprings)
 {
-    replacePopulation(population, offsprings);
+    replacePopulation(population, offsprings, LAMBDA);
 }
 
-void GaHelper::pickRandomIndividuals(Individual **randomIndividuals, Individual **population)
+void GaHelper::pickRandomIndividuals(Individual** randomIndividuals, Individual** population, int k)
 {
     std::uniform_int_distribution<> distr(0, NUM_INDIVIDUALS - 1);
 
@@ -38,7 +46,7 @@ void GaHelper::pickRandomIndividuals(Individual **randomIndividuals, Individual 
     }
 }
 
-Individual* GaHelper::findBestIndividual(Individual **individuals, int numIndividuals)
+Individual* GaHelper::findBestIndividual(Individual** individuals, int numIndividuals)
 {
     unsigned int bestIdx = 0;
     float bestFitness = individuals[0]->fitness;
@@ -54,14 +62,19 @@ Individual* GaHelper::findBestIndividual(Individual **individuals, int numIndivi
     return individuals[bestIdx];
 }
 
-void GaHelper::selectParents(Individual **matingPool, Individual **population)
+void GaHelper::selectParents(Individual** matingPool, Individual** population)
 {
-    tournamentSelection(matingPool, population, GaHelper::findBestIndividual, GaHelper::pickRandomIndividuals);
+    tournamentSelection(matingPool, population, k, MU, findBestIndividual, pickRandomIndividuals);
 }
 
-Individual* GaHelper::getRandomParent(Individual **matingPool)
+Individual* GaHelper::getRandomParent(Individual** matingPool)
 {
+    DEBUG("Getting random parent")
+
     std::uniform_int_distribution<> distr(0, MU - 1);
+
+    Individual* test = matingPool[distr(eng)];
+    DEBUG(test->size);
 
     return matingPool[distr(eng)];
 }
@@ -71,22 +84,46 @@ bool GaHelper::compareIndividual(const Individual* i1, const Individual* i2)
     return i1->fitness < i2->fitness;
 }
 
-void GaHelper::createOffsprings(Individual **offsprings, Individual **matingPool)
+void GaHelper::createOffsprings(Individual** offsprings, Individual** matingPool)
 {
+    DEBUG("Starting the creation of offsprings")
     int i = 0;
 
+    DEBUG("Initializing the randomness")
+
     std::uniform_real_distribution<> dist(0, 1);
+    
+    DEBUG("Mating pool")
     std::uniform_int_distribution<> distr(0, matingPool[0]->size - 1);
 
     while(i < LAMBDA)
     {
+        DEBUG("Getting random parents");
+
         Individual* parent1 = GaHelper::getRandomParent(matingPool);
         Individual* parent2 = GaHelper::getRandomParent(matingPool);
 
+        DEBUG(matingPool[0]->size)
+        DEBUG(parent1->size)
+
+        DEBUG("Got random parents");
+
         float r = dist(eng);
 
+        DEBUG("Creating offsprings from parent");
+
+        DEBUG(parent1)
+
+        DEBUG(parent1->size)
+        DEBUG(parent2->size)
+
         Individual* offspring1 = new Individual(*parent1);
+
+        DEBUG("Created first offspring");
+
         Individual* offspring2 = new Individual(*parent2);
+
+        DEBUG("Created offsprings from parent");
 
         if (r <= CROSSOVER_RATE)
         {
@@ -109,5 +146,5 @@ void GaHelper::performCrossover(Individual *offspring1, Individual *offspring2,
 
 void GaHelper::performMutation(Individual *offspring)
 {
-    randomResetting(offspring);
+    randomResetting(offspring, MUTATION_RATE);
 }

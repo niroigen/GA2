@@ -1,6 +1,6 @@
 #include "GA/mutation.hpp"
 
-void randomResetting(Individual *offspring)
+void randomResetting(Individual *offspring, const float MUTATION_RATE)
 {
     std::uniform_real_distribution<> dist(0, 1);
     std::uniform_real_distribution<> distX(0, offspring->frameLength);

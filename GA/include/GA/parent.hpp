@@ -2,9 +2,6 @@
 
 #include "GA/individual.hpp"
 
-extern const int MU;
-extern const int k;
-
-void tournamentSelection(Individual **matingPool, Individual **population, 
+void tournamentSelection(Individual** matingPool, Individual** population, const int k, const int MU,
                          Individual* (*funcBestIndividual)(Individual**, int),
-                         void (*funcPickRandomIndividuals)(Individual**, Individual**));
+                         void (*funcPickRandomIndividuals)(Individual**, Individual**, int));

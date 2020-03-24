@@ -1,5 +1,13 @@
 #include "GA/individual.hpp"
 
+#define DEBUG_MODE 1
+
+#if DEBUG_MODE
+#define DEBUG(x) std::cout << x << std::endl;
+#else
+#define DEBUG(x)
+#endif
+
 Individual::Individual(Tile *tiles, unsigned int size,
                        unsigned int frameLength, unsigned int frameWidth)
     : tiles(tiles), size(size), frameLength(frameLength), frameWidth(frameWidth)
@@ -9,9 +17,7 @@ Individual::Individual(Tile *tiles, unsigned int size,
         indices[i] = i;
     }
 
-    #if DEBUG
-    std::cout << "Initialized Base\n" << size << '\n';
-    #endif
+    DEBUG("Initialized Base")
 }
 
 Individual::Individual(Tile *tiles, unsigned int size, const Individual *baseIndividual,
@@ -28,15 +34,14 @@ Individual::Individual(Tile *tiles, unsigned int size, const Individual *baseInd
         indices[i] = findExistingTile(baseIndividual->tiles[i]);
     }
 
-    #if DEBUG
-    std::cout << "Initialized\n";
-    #endif
+    DEBUG("Initialized")
 }
 
 Individual::Individual(const Individual& individual)
     : size(individual.size), frameLength(individual.frameLength),
       frameWidth(individual.frameWidth)
 {
+    DEBUG("Starting copy constructor")
     tiles = new Tile[individual.size];
 
     for (int i = 0; i < individual.size; i++)
@@ -49,13 +54,12 @@ Individual::Individual(const Individual& individual)
         indices[i] = individual.indices[i];
     }
 
-    #if DEBUG
-    std::cout << "Individual Copy Constructor"<< std::endl;
-    #endif
+    DEBUG("Individual Copy Constructor")
 }
 
 Individual& Individual::operator=(const Individual& individual)
 {
+    DEBUG("Starting assignmnet operator");
     tiles = new Tile[individual.size];
 
     for (int i = 0; i < individual.size; i++)
@@ -72,9 +76,7 @@ Individual& Individual::operator=(const Individual& individual)
     frameLength = individual.frameLength;
     frameWidth = individual.frameWidth;
 
-    #if DEBUG
-    std::cout << "Individual Assignment Operator Called"<< std::endl;
-    #endif
+    DEBUG("Individual Assignment Operator Called")
 
     return *this;
 }
@@ -118,9 +120,7 @@ Individual::~Individual()
     {
         delete [] tiles;
 
-        #if DEBUG == 1
-        std::cout << "Destroying tiles\n";
-        #endif
+        DEBUG("Destroying tiles")
 
         tiles = nullptr;
     }
@@ -129,14 +129,10 @@ Individual::~Individual()
     {
         delete [] indices;
 
-        #if DEBUG
-        std::cout << "Destroying indices\n";
-        #endif
+        DEBUG("Destroying indices")
 
         indices = nullptr;
     }
 
-    #if DEBUG
-    std::cout << "Destroyed\n";
-    #endif
+    DEBUG("Destroyed")
 }

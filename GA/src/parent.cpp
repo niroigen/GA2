@@ -1,8 +1,8 @@
 #include "GA/parent.hpp"
 
-void tournamentSelection(Individual **matingPool, Individual **population, 
+void tournamentSelection(Individual** matingPool, Individual** population, const int k, const int MU,
                          Individual* (*funcBestIndividual)(Individual**, int),
-                         void (*funcPickRandomIndividuals)(Individual**, Individual**))
+                         void (*funcPickRandomIndividuals)(Individual**, Individual**, int))
 {
     unsigned int currentMember = 0;
 
@@ -10,7 +10,7 @@ void tournamentSelection(Individual **matingPool, Individual **population,
     {
         Individual *randomIndividuals[k];
 
-        (*funcPickRandomIndividuals)(randomIndividuals, population);
+        (*funcPickRandomIndividuals)(randomIndividuals, population, k);
 
         Individual* bestIndividual = (*funcBestIndividual)(randomIndividuals, k);
 
