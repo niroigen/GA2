@@ -56,7 +56,7 @@ void GA::run()
         DEBUG(bestIndividualInit->fitness);
         #endif
 
-        for (generation = 0; generation < 10; generation++)
+        for (generation = 0; generation < 1000; generation++)
         {
             DEBUG("Selecting parents");
             // Selecting parents for next generation
