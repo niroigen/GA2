@@ -2,4 +2,4 @@
 
 #include "GA/individual.hpp"
 
-void defaultFitnessFunction(Individual* individual);
+void defaultFitnessFunction(Individual*);

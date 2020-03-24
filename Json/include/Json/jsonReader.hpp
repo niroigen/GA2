@@ -13,5 +13,5 @@ using namespace std;
 
 extern const int NUM_INDIVIDUALS;
 
-Individual* createBaseIndividual(int numTiles, const Json::Value &obj);
-void initializePopulation(Individual** population);
+Individual* createBaseIndividual(int, const Json::Value&);
+void initializePopulation(Individual**);

@@ -12,20 +12,17 @@ struct Individual
     float fitness = 0;
 
     Individual() {}
-    Individual(Tile *tiles, unsigned int size,
-               unsigned int frameLength, unsigned int frameWidth);
-    Individual(Tile *tiles, unsigned int size, const Individual *baseIndividual,
-               unsigned int frameLength, unsigned int frameWidth);
-    Individual(const Individual& individual);
-    Individual& operator=(const Individual& individual);
+    Individual(Tile*, unsigned int,
+               unsigned int, unsigned int);
+    Individual(Tile*, unsigned int, const Individual*, unsigned int, unsigned int);
+    Individual(const Individual&);
+    Individual& operator=(const Individual&);
     ~Individual();
 
 
-    bool isIdxListed(int idx);
-    
-    bool areTilesEqual(const Tile &tile1, const Tile &tile2, const int idx);
-
-    int findExistingTile(const Tile &tile);    
+    bool isIdxListed(int);
+    bool areTilesEqual(const Tile&, const Tile&, const int);
+    int findExistingTile(const Tile&);
 };
 
 #endif

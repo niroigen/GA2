@@ -5,7 +5,5 @@
 
 extern std::mt19937 eng;
 
-void uniformCrossover(Individual *offspring1, Individual *offspring2,
-                      std::uniform_int_distribution<>& distr);
-void twoPointCrossover(Individual *offspring1, Individual *offspring2,
-                      std::uniform_int_distribution<>& distr);
+void uniformCrossover(Individual*, Individual*, std::uniform_int_distribution<>&);
+void twoPointCrossover(Individual*, Individual*, std::uniform_int_distribution<>&);

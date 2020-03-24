@@ -4,4 +4,4 @@
 
 extern const int NUM_INDIVIDUALS;
 
-void replacePopulation(Individual** population, Individual** offsprings, const int LAMBDA);
+void replacePopulation(Individual**, Individual**, const int);

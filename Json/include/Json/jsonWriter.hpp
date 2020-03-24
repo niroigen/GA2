@@ -13,4 +13,4 @@ using namespace std;
 
 extern const int NUM_INDIVIDUALS;
 
-void outputBestIndividual(Individual* bestIndividual);
+void outputBestIndividual(Individual*);

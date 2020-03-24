@@ -21,10 +21,10 @@ struct GA
     Individual** matingPool;
     Individual** offsprings;
 
-    void freePopulation(Individual** population);
-    void freeOffsprings(Individual** offsprings);
+    void freePopulation(Individual**);
+    void freeOffsprings(Individual**);
     
-    GA(const int MU, const int LAMBDA, const int k, const float CROSSOVER_RATE, const float MUTATION_RATE);
+    GA(const int, const int, const int, const float, const float);
     void run();
     ~GA()
     {
