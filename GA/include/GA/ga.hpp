@@ -34,5 +34,9 @@ struct GA
         delete[] population;
         delete[] matingPool;
         delete[] offsprings;
+
+        population = nullptr;
+        matingPool = nullptr;
+        offsprings = nullptr;
     }
 };
