@@ -16,9 +16,8 @@ auto seed = std::chrono::system_clock::now().time_since_epoch().count();
 std::mt19937 eng {seed};
 int generation;
 
-void freePopulation(Individual **population);
-void freeOffsprings(Individual **offsprings);
-void replacePopulation(Individual **population,Individual **offsprings);
+void freePopulation(Individual** population);
+void freeOffsprings(Individual** offsprings);
 
 int main()
 {
@@ -82,7 +81,7 @@ int main()
     #endif
 }
 
-void freePopulation(Individual **population)
+void freePopulation(Individual** population)
 {
     for (int i = 0; i < NUM_INDIVIDUALS; i++)
     {
@@ -90,7 +89,7 @@ void freePopulation(Individual **population)
     }
 }
 
-void freeOffsprings(Individual **offsprings)
+void freeOffsprings(Individual** offsprings)
 {
     if (NUM_INDIVIDUALS < LAMBDA)
     {
