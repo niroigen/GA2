@@ -1,5 +1,4 @@
-#ifndef __INDIVIDUAL_H__
-#define __INDIVIDUAL_H__
+#pragma once
 
 #include <iostream>
 #include "GA/tile.hpp"
@@ -24,5 +23,3 @@ struct Individual
     bool areTilesEqual(const Tile&, const Tile&, const int);
     int findExistingTile(const Tile&);
 };
-
-#endif
