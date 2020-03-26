@@ -94,7 +94,7 @@ void GaHelper::createOffsprings(Individual** offsprings, Individual** matingPool
     std::uniform_real_distribution<> dist(0, 1);
     
     DEBUG("Mating pool")
-    std::uniform_int_distribution<> distr(0, matingPool[0]->size - 1);
+    std::uniform_int_distribution<> distr(0, 31);
 
     while(i < LAMBDA)
     {

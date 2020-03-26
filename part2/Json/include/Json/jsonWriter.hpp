@@ -7,7 +7,6 @@
 #include <string>
 
 #include "GA/individual.hpp"
-#include "GA/tile.hpp"
 
 using namespace std;
 

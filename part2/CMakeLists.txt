@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10.2)
-project(genetic)
+project(genetic_part2)
 
 add_subdirectory(ASN2)
 add_subdirectory(GA)
