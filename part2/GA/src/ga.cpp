@@ -62,7 +62,6 @@ void GA::run()
         //     DEBUG("Selecting parents");
         //     // Selecting parents for next generation
         //     helper->selectParents(matingPool, population);
-        //     DEBUG(matingPool[0]->size);
         //     DEBUG("Selected parents");
 
         //     DEBUG("Creating offsprings");
@@ -86,6 +85,8 @@ void GA::run()
 
         //     // Freeing the offspring that will no longer be used
         //     freeOffsprings(offsprings);
+
+        //     helper->attemptRules(population);
 
         //     #if DEBUG
         //     Individual* bestIndividualInit = population[0];

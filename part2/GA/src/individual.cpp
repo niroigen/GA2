@@ -8,12 +8,11 @@
 #define DEBUG(x)
 #endif
 
-Individual::Individual(unsigned int* rules, int initialState, int goalState)
-    : initialState(initialState), goalState(goalState)
+Individual::Individual(unsigned int* rules, std::vector<std::string> initialState, std::vector<std::string> goalState)
+    : initialState(initialState), goalState(goalState), currentState(initialState)
 {
     for (int i = 0; i < 32; i++)
     {
         this->rules[i] = rules[i];
     }
-
 }

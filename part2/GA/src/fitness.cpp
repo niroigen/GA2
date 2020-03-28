@@ -1,5 +1,13 @@
 #include "GA/fitness.hpp"
 
+#define DEBUG_MODE 1
+
+#if DEBUG_MODE
+#define DEBUG(x) std::cout << x << std::endl;
+#else
+#define DEBUG(x)
+#endif
+
 void defaultFitnessFunction(Individual* individual)
 {
     int fitness_table[9][9] = {0};
@@ -20,9 +28,10 @@ void defaultFitnessFunction(Individual* individual)
         {
             if (row != 0 && col != 0)
             {
-                int val1 = individual->initialState & (1 << (row - 1));
-                int val2 = individual->goalState & (1 << (col - 1));
-                if ((val1 > 0) == (val2 > 0))
+                std::string val1 = individual->currentState[row - 1];
+                std::string val2 = individual->goalState[col - 1];
+                
+                if (val1 == val2)
                 {
                     fitness_table[row][col] = fitness_table[row-1][col-1];
                 }

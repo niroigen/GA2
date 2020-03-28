@@ -1,5 +1,13 @@
 #include "Json/jsonReader.hpp"
 
+#define DEBUG_MODE 1
+
+#if DEBUG_MODE
+#define DEBUG(x) std::cout << x << std::endl;
+#else
+#define DEBUG(x)
+#endif
+
 void initializePopulation(Individual** population) {
     ifstream ifs("automata-population.json");
 
@@ -7,8 +15,25 @@ void initializePopulation(Individual** population) {
     Json::Value obj;
     reader.parse(ifs, obj); // reader can also read strings
 
-    uint8_t initialState = stoi(obj[0]["Initial State"].asString(), nullptr, 2);
-    uint8_t goalState = stoi(obj[1]["Goal State"].asString(), nullptr, 2);
+    DEBUG("HELLO");
+
+    std::string initialStateStr = obj[0]["Initial State"].asString();
+    std::string goalStateStr = obj[1]["Goal State"].asString();
+
+    DEBUG("BELLO");
+
+    std::vector<std::string> initialState(8, "0");
+    std::vector<std::string> goalState(8, "0");
+
+    DEBUG("Starting to get all values");
+
+    for (int i = 0; i < 8; i++)
+    {
+        initialState[i] = initialStateStr[i];
+        goalState[i] = goalStateStr[i];
+    }
+
+    DEBUG("Got all values");
 
     unsigned int rules[32];
 

@@ -3,6 +3,9 @@
 #include <iostream>
 #include <random>
 #include <algorithm>
+#include <thread>
+#include <cstdint>
+#include <string>
 #include "GA/individual.hpp"
 #include "GA/crossover.hpp"
 #include "GA/mutation.hpp"
@@ -36,4 +39,7 @@ struct GaHelper
     void performCrossover(Individual*, Individual*, std::uniform_int_distribution<>&);
     void performMutation(Individual*);
     static bool compareIndividual(const Individual*, const Individual*);
+    void attemptRules(Individual**);
+    static void performRule(Individual*, std::uint8_t, std::uint8_t, std::uint8_t);
+    static std::string getWindow(int, std::vector<std::string>);
 };

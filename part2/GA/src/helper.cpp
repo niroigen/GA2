@@ -148,3 +148,55 @@ void GaHelper::performMutation(Individual *offspring)
 {
     randomResetting(offspring, MUTATION_RATE);
 }
+
+// void performRule(std::vector<std::uint8_t> currentState, std::uint8_t* rules)
+// {
+//     std::uint8_t rule = rules[]    
+// }
+
+std::string GaHelper::getWindow(int startIdx, std::vector<std::string> currentState)
+{
+    std::string res = "00000";
+
+    for (int i = 0; i < 5; i++)
+    {
+        DEBUG(typeid(res[i]).name());
+        DEBUG(typeid(currentState[startIdx % 5]).name());
+        // res[i] = currentState[startIdx % 5];
+        startIdx++;
+    }
+
+    return res;
+}
+
+void GaHelper::attemptRules(Individual** population)
+{
+    for (int i = 0; i < NUM_INDIVIDUALS; i++)
+    {
+        Individual* currentIndividual = population[i];
+        std::vector<std::string> currentState = currentIndividual->initialState;
+        auto nextState = currentIndividual->currentState;
+
+        for (int startIdx = 0; i < currentState.size(); startIdx++)
+        {
+            auto window = GaHelper::getWindow(startIdx, currentState);
+            const int rule = std::stoi(window, nullptr, 2);
+            int rule_to_perform = currentIndividual->rules[rule];
+            int middleIdx = (startIdx + 2) % currentState.size();
+            switch(rule_to_perform)
+            {
+                case 0:
+                nextState[middleIdx] = "0";
+                break;
+                case 1:
+                break;
+                case 2:
+                break;
+                case 3:
+                break;
+                default:
+                break;
+            }
+        }
+    }
+}

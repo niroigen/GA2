@@ -1,17 +1,22 @@
 #pragma once
 
 #include <iostream>
-#include <cstdint>
+#include <vector>
+#include <string>
 
 struct Individual
 {
     unsigned int rules[32];
-    int initialState;
-    int goalState;
+    // TODO: change this to current state
+    std::vector<std::string> initialState;
+
+    // TODO: change this to next state
+    std::vector<std::string> goalState;
+    std::vector<std::string> currentState;
     float fitness = 0;
 
     Individual() {}
-    Individual(unsigned int*, int, int);
+    Individual(unsigned int*, std::vector<std::string>, std::vector<std::string>);
 
     // Individual(Tile*, unsigned int,
     //            unsigned int, unsigned int);
