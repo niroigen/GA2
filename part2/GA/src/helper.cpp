@@ -1,6 +1,6 @@
 #include "GA/helper.hpp"
 
-#define DEBUG_MODE 0
+#define DEBUG_MODE 1
 
 #if DEBUG_MODE
 #define DEBUG(x) std::cout << x << std::endl;
@@ -32,17 +32,9 @@ void GaHelper::pickRandomIndividuals(Individual** randomIndividuals, Individual*
 
     for (int i = 0; i < k; i++)
     {
-        #if DEBUG
-        std::cout << distr(eng) << '\n';
-        #endif
-
         int randIdx = distr(eng);
 
         randomIndividuals[i] = population[randIdx];
-
-        #if DEBUG
-        std::cout << randomIndividuals[i]->fitness << ' ' << population[randIdx]->fitness << '\n';
-        #endif
     }
 }
 
@@ -69,12 +61,9 @@ void GaHelper::selectParents(Individual** matingPool, Individual** population)
 
 Individual* GaHelper::getRandomParent(Individual** matingPool)
 {
-    DEBUG("Getting random parent")
-
     std::uniform_int_distribution<> distr(0, MU - 1);
 
     Individual* test = matingPool[distr(eng)];
-    DEBUG(test->size);
 
     return matingPool[distr(eng)];
 }
@@ -86,44 +75,22 @@ bool GaHelper::compareIndividual(const Individual* i1, const Individual* i2)
 
 void GaHelper::createOffsprings(Individual** offsprings, Individual** matingPool)
 {
-    DEBUG("Starting the creation of offsprings")
     int i = 0;
-
-    DEBUG("Initializing the randomness")
 
     std::uniform_real_distribution<> dist(0, 1);
     
-    DEBUG("Mating pool")
     std::uniform_int_distribution<> distr(0, 31);
 
     while(i < LAMBDA)
     {
-        DEBUG("Getting random parents");
-
         Individual* parent1 = GaHelper::getRandomParent(matingPool);
         Individual* parent2 = GaHelper::getRandomParent(matingPool);
 
-        DEBUG(matingPool[0]->size)
-        DEBUG(parent1->size)
-
-        DEBUG("Got random parents");
-
         float r = dist(eng);
-
-        DEBUG("Creating offsprings from parent");
-
-        DEBUG(parent1)
-
-        DEBUG(parent1->size)
-        DEBUG(parent2->size)
 
         Individual* offspring1 = new Individual(*parent1);
 
-        DEBUG("Created first offspring");
-
         Individual* offspring2 = new Individual(*parent2);
-
-        DEBUG("Created offsprings from parent");
 
         if (r <= CROSSOVER_RATE)
         {
@@ -160,43 +127,87 @@ std::string GaHelper::getWindow(int startIdx, std::vector<std::string> currentSt
 
     for (int i = 0; i < 5; i++)
     {
-        DEBUG(typeid(res[i]).name());
-        DEBUG(typeid(currentState[startIdx % 5]).name());
-        // res[i] = currentState[startIdx % 5];
+        res[i] = currentState[startIdx % 5][0];
         startIdx++;
     }
 
     return res;
 }
 
-void GaHelper::attemptRules(Individual** population)
+bool isGoalStateEqualToCurrentState(std::vector<std::string> currentState,std::vector<std::string> goalState)
 {
-    for (int i = 0; i < NUM_INDIVIDUALS; i++)
+    std::string ans;
+
+    for (int i = 0; i < currentState.size(); i++)
+    {
+        ans += currentState[i];
+    }
+
+
+    if (currentState.size() != goalState.size()) return false;
+    else
+    {
+        for (int i = 0; i < currentState.size(); i++)
+        {
+            if (currentState[i] != goalState[i]) return false;
+        }
+
+        return true;
+    }
+}
+
+void GaHelper::attemptRules(Individual**& population)
+{
+    bool solutionFound = false;
+    for (int i = 0; i < NUM_INDIVIDUALS && !solutionFound; i++)
     {
         Individual* currentIndividual = population[i];
-        std::vector<std::string> currentState = currentIndividual->initialState;
-        auto nextState = currentIndividual->currentState;
 
-        for (int startIdx = 0; i < currentState.size(); startIdx++)
+        for (int test = 0; test < 100 && !solutionFound; test++)
         {
-            auto window = GaHelper::getWindow(startIdx, currentState);
-            const int rule = std::stoi(window, nullptr, 2);
-            int rule_to_perform = currentIndividual->rules[rule];
-            int middleIdx = (startIdx + 2) % currentState.size();
-            switch(rule_to_perform)
+            std::vector<std::string> currentState = currentIndividual->initialState;
+            std::vector<std::string> nextState = currentIndividual->currentState;
+
+            int currStateIdx = 0;
+            int middleIdx = 0;
+
+            for (int startIdx = 0; startIdx < currentState.size() && !solutionFound; startIdx++)
             {
-                case 0:
-                nextState[middleIdx] = "0";
-                break;
-                case 1:
-                break;
-                case 2:
-                break;
-                case 3:
-                break;
-                default:
-                break;
+                auto window = GaHelper::getWindow(startIdx, currentState);
+                const int rule = std::stoi(window, nullptr, 2);
+
+                int rule_to_perform = currentIndividual->rules[rule];
+
+                if (nextState.size() == 0) break;
+
+                int middleIdx = (startIdx + 2) % currentState.size();
+
+                if (middleIdx + currStateIdx >= 0 && middleIdx + currStateIdx < nextState.size())
+                {
+                    switch(rule_to_perform)
+                    {
+                        case 0:
+                        nextState[middleIdx + currStateIdx] = "0";
+                        break;
+                        case 1:
+                        nextState[middleIdx + currStateIdx] = "1";
+                        break;
+                        case 2:
+                        nextState.erase(nextState.begin() + middleIdx + currStateIdx);
+                        currStateIdx--;
+                        break;
+                        case 3:
+                        std::string val = currentState[middleIdx];
+                        nextState.insert(nextState.begin() + middleIdx + currStateIdx, val);
+                        currStateIdx++;
+                        break;
+                    }
+
+                    solutionFound = isGoalStateEqualToCurrentState(nextState, currentIndividual->goalState);
+                }
             }
+
+            currentIndividual->currentState = nextState;
         }
     }
 }

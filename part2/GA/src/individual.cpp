@@ -16,3 +16,17 @@ Individual::Individual(unsigned int* rules, std::vector<std::string> initialStat
         this->rules[i] = rules[i];
     }
 }
+
+Individual::Individual(const Individual& individual)
+{
+    for (int i = 0; i < 32; i++)
+    {
+        this->rules[i] = individual.rules[i];
+    }
+
+    initialState = individual.initialState;
+
+    goalState = individual.goalState;
+
+    currentState = individual.initialState;
+}

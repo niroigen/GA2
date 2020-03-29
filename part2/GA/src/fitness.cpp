@@ -24,6 +24,11 @@ void defaultFitnessFunction(Individual* individual)
 
     for (int row = 0; row < 9; row++)
     {
+        if (row - 1 >= int(individual->currentState.size()))
+        {
+            fitness_table[8][8] = 10;
+            break;
+        }
         for (int col = 0; col < 9; col++)
         {
             if (row != 0 && col != 0)
@@ -43,5 +48,5 @@ void defaultFitnessFunction(Individual* individual)
         }
     }
     
-    individual->fitness = fitness_table[8][8];
+    individual->fitness = fitness_table[8][8] * 0.4 + std::abs(int(individual->currentState.size()) - 8) * 0.6;
 }

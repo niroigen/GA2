@@ -21,7 +21,7 @@ struct Individual
     // Individual(Tile*, unsigned int,
     //            unsigned int, unsigned int);
     // Individual(Tile*, unsigned int, const Individual*, unsigned int, unsigned int);
-    // Individual(const Individual&);
+    Individual(const Individual&);
     // Individual& operator=(const Individual&);
     // ~Individual();
 
