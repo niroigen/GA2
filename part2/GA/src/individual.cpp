@@ -29,4 +29,24 @@ Individual::Individual(const Individual& individual)
     goalState = individual.goalState;
 
     currentState = individual.initialState;
+
+    fitness = individual.fitness;
+}
+
+Individual& Individual::operator=(const Individual& individual)
+{
+    if( this != &individual )
+    {
+        for (int i = 0; i < 32; i++)
+        {
+            rules[i] = individual.rules[i];
+        }
+
+        initialState = individual.initialState;
+
+        goalState = individual.goalState;
+
+        currentState = individual.initialState;
+    }
+    return *this;
 }

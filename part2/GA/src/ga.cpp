@@ -4,8 +4,10 @@
 
 #if DEBUG_MODE
 #define DEBUG(x) std::cout << x << std::endl;
+#define WAIT std::cin.get();
 #else
 #define DEBUG(x)
+#define WAIT
 #endif
 
 GA::GA(const int MU, const int LAMBDA, const int k, const float CROSSOVER_RATE, const float MUTATION_RATE)
@@ -26,17 +28,16 @@ void GA::freePopulation(Individual** population)
     for (int i = 0; i < NUM_INDIVIDUALS; i++)
     {
         delete population[i];
+        population[i] = nullptr;
     }
 }
 
 void GA::freeOffsprings(Individual** offsprings)
 {
-    if (NUM_INDIVIDUALS < LAMBDA)
+    for (int i = 0; i < LAMBDA; i++)
     {
-        for (int i = NUM_INDIVIDUALS; i < LAMBDA; i++)
-        {
-            delete offsprings[i];
-        }
+        delete offsprings[i];
+        offsprings[i] = nullptr;
     }
 }
 
@@ -60,7 +61,7 @@ void GA::run()
         DEBUG(bestIndividualInit->fitness);
         #endif
 
-        for (generation = 0; generation < 1000; generation++)
+        for (generation = 0; generation < 10; generation++)
         {
             // Selecting parents for next generation
             helper->selectParents(matingPool, population);
@@ -72,6 +73,7 @@ void GA::run()
 
             // Evaluating their fitness level
             helper->evaluatePopulation(offsprings, LAMBDA);
+
             // Freeing the population
             freePopulation(population);
 
@@ -84,30 +86,24 @@ void GA::run()
             // Freeing the offspring that will no longer be used
             freeOffsprings(offsprings);
 
-            // DEBUG("Attempting rules");
-            // DEBUG(population);
-            // DEBUG(helper);
-            // helper->attemptRules(population);
-
-
             #if DEBUG_MODE
             Individual* bestIndividualInit = population[0];
             DEBUG(bestIndividualInit->fitness);
 
             if(bestIndividualInit->fitness == 0) break;
-
-            std::string ans;
-
-            for (int i = 0; i < bestIndividualInit->currentState.size(); i++)
-            {
-                ans += bestIndividualInit->currentState[i];
-            }
-            DEBUG(ans)
             #endif
         }
 
         Individual* bestIndividual = helper->findBestIndividual(population, NUM_INDIVIDUALS);
         std::cout << bestIndividual->fitness << ',' << std::flush;
+
+        std::string ans;
+
+        for (int i = 0; i < bestIndividual->currentState.size(); i++)
+        {
+            ans += bestIndividual ->currentState[i];
+        }
+        DEBUG(ans)
 
         #if !PARAMETER_TUNING
         outputBestIndividual(bestIndividual);

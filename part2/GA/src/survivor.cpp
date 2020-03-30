@@ -9,6 +9,6 @@ void replacePopulation(Individual** population, Individual** offsprings, const i
     }
     for (int i = NUM_INDIVIDUALS - 1; i > (NUM_INDIVIDUALS - 1) - numToReplace; i--)
     {
-        population[i] = offsprings[i];
+        population[i] = new Individual(*offsprings[i]);
     }
 }

@@ -4,8 +4,10 @@
 
 #if DEBUG_MODE
 #define DEBUG(x) std::cout << x << std::endl;
+#define WAIT std::cin.get();
 #else
 #define DEBUG(x)
+#define WAIT
 #endif
 
 void GaHelper::evaluatePopulation(Individual** population, int size)
@@ -89,7 +91,6 @@ void GaHelper::createOffsprings(Individual** offsprings, Individual** matingPool
         float r = dist(eng);
 
         Individual* offspring1 = new Individual(*parent1);
-
         Individual* offspring2 = new Individual(*parent2);
 
         if (r <= CROSSOVER_RATE)
@@ -108,7 +109,7 @@ void GaHelper::createOffsprings(Individual** offsprings, Individual** matingPool
 void GaHelper::performCrossover(Individual *offspring1, Individual *offspring2,
                                 std::uniform_int_distribution<>& distr)
 {
-    uniformCrossover(offspring1, offspring2, distr);
+    twoPointCrossover(offspring1, offspring2, distr);
 }
 
 void GaHelper::performMutation(Individual *offspring)
@@ -116,34 +117,34 @@ void GaHelper::performMutation(Individual *offspring)
     randomResetting(offspring, MUTATION_RATE);
 }
 
-// void performRule(std::vector<std::uint8_t> currentState, std::uint8_t* rules)
-// {
-//     std::uint8_t rule = rules[]    
-// }
-
 std::string GaHelper::getWindow(int startIdx, std::vector<std::string> currentState)
 {
     std::string res = "00000";
 
+    // DEBUG(startIdx)
+
     for (int i = 0; i < 5; i++)
     {
-        res[i] = currentState[startIdx % 5][0];
-        startIdx++;
+        res[i] = currentState[(startIdx + i) % currentState.size()][0];
     }
+
+//         DEBUG("inSIDE")
+//     std::string ans;
+
+//     for (int i = 0; i < currentState.size(); i++)
+//     {
+//         ans += currentState[i];
+//     }
+
+//     DEBUG(ans)
+
+// WAIT;
 
     return res;
 }
 
 bool isGoalStateEqualToCurrentState(std::vector<std::string> currentState,std::vector<std::string> goalState)
 {
-    std::string ans;
-
-    for (int i = 0; i < currentState.size(); i++)
-    {
-        ans += currentState[i];
-    }
-
-
     if (currentState.size() != goalState.size()) return false;
     else
     {
@@ -156,14 +157,14 @@ bool isGoalStateEqualToCurrentState(std::vector<std::string> currentState,std::v
     }
 }
 
-void GaHelper::attemptRules(Individual**& population)
+void GaHelper::attemptRules(Individual** population)
 {
     bool solutionFound = false;
     for (int i = 0; i < NUM_INDIVIDUALS && !solutionFound; i++)
     {
         Individual* currentIndividual = population[i];
 
-        for (int test = 0; test < 100 && !solutionFound; test++)
+        for (int test = 0; test < 30 && !solutionFound; test++)
         {
             std::vector<std::string> currentState = currentIndividual->initialState;
             std::vector<std::string> nextState = currentIndividual->currentState;
@@ -174,6 +175,7 @@ void GaHelper::attemptRules(Individual**& population)
             for (int startIdx = 0; startIdx < currentState.size() && !solutionFound; startIdx++)
             {
                 auto window = GaHelper::getWindow(startIdx, currentState);
+
                 const int rule = std::stoi(window, nullptr, 2);
 
                 int rule_to_perform = currentIndividual->rules[rule];
