@@ -22,15 +22,15 @@ void initializePopulation(Individual** population) {
 
     DEBUG("BELLO");
 
-    std::vector<std::string> initialState(8, "0");
-    std::vector<std::string> goalState(8, "0");
+    std::vector<std::vector<std::string>> initialState(8, std::vector<std::string>(1, "0"));
+    std::vector<std::vector<std::string>> goalState(8, std::vector<std::string>(1, "0"));
 
     DEBUG("Starting to get all values");
 
     for (int i = 0; i < 8; i++)
     {
-        initialState[i] = initialStateStr[i];
-        goalState[i] = goalStateStr[i];
+        initialState[i][0] = initialStateStr[i];
+        goalState[i][0] = goalStateStr[i];
     }
 
     DEBUG("Got all values");

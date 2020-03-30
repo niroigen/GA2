@@ -12,6 +12,9 @@
 
 void defaultFitnessFunction(Individual* individual)
 {
+    std::string goalState = individual->getGoalState();
+    std::string currentState = individual->getCurrentState();
+
     int fitness_table[9][9] = {0};
 
     for (int row = 0; row < 9; row++)
@@ -35,8 +38,8 @@ void defaultFitnessFunction(Individual* individual)
         {
             if (row != 0 && col != 0)
             {
-                std::string val1 = individual->currentState[row - 1];
-                std::string val2 = individual->goalState[col - 1];
+                char val1 = currentState[row - 1];
+                char val2 = goalState[col - 1];
                 
                 if (val1 == val2)
                 {
@@ -50,5 +53,5 @@ void defaultFitnessFunction(Individual* individual)
         }
     }
     
-    individual->fitness = fitness_table[8][8];// + std::abs(int(individual->currentState.size()) - 8) * 0.6;
+    individual->fitness = fitness_table[8][8]* 0.4 + std::abs(int(currentState.length()) - 8) * 0.6;
 }

@@ -3,14 +3,8 @@
 
 void outputBestIndividual(Individual* bestIndividual)
 {
-    std::string initialState = "";
-    std::string goalState = "";
-
-    for (int i = 0; i < 8; i++)
-    {
-        initialState += bestIndividual->initialState[i];
-        goalState += bestIndividual->goalState[i];
-    }
+    std::string initialState = bestIndividual->getInitialState();
+    std::string goalState = bestIndividual->getGoalState();
 
     Json::Value best;
     best["Initial State"] = initialState;

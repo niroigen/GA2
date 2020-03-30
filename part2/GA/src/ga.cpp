@@ -90,6 +90,18 @@ void GA::run()
             Individual* bestIndividualInit = population[0];
             DEBUG(bestIndividualInit->fitness);
 
+            std::string ans;
+
+            for (int i = 0; i < bestIndividualInit->currentState.size(); i++)
+            {
+                for (int j = 0; j < bestIndividualInit->currentState[i].size(); j++)
+                {
+                    ans += bestIndividualInit ->currentState[i][j];
+                }
+            }
+
+            DEBUG(ans);
+
             if(bestIndividualInit->fitness == 0) break;
             #endif
         }
@@ -101,7 +113,10 @@ void GA::run()
 
         for (int i = 0; i < bestIndividual->currentState.size(); i++)
         {
-            ans += bestIndividual ->currentState[i];
+            for (int j = 0; j < bestIndividual->currentState[i].size(); j++)
+            {
+                ans += bestIndividual->currentState[i][j];
+            }
         }
         DEBUG(ans)
         WAIT;

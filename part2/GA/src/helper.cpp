@@ -117,24 +117,24 @@ void GaHelper::performMutation(Individual *offspring)
     randomResetting(offspring, MUTATION_RATE);
 }
 
-std::string GaHelper::getWindow(int startIdx, std::vector<std::string> currentState)
+std::string GaHelper::getWindow(int startIdx, const std::string& currentState)
 {
     std::string res = "00000";
 
     for (int i = 0; i < 5; i++)
     {
-        res[i] = currentState[(startIdx + i) % currentState.size()][0];
+        res[i] = currentState[(startIdx + i) % currentState.length()];
     }
 
     return res;
 }
 
-bool isGoalStateEqualToCurrentState(std::vector<std::string> currentState,std::vector<std::string> goalState)
+bool isGoalStateEqualToCurrentState(std::string currentState,std::string goalState)
 {
-    if (currentState.size() != goalState.size()) return false;
+    if (currentState.size() != goalState.length()) return false;
     else
     {
-        for (int i = 0; i < currentState.size(); i++)
+        for (int i = 0; i < currentState.length(); i++)
         {
             if (currentState[i] != goalState[i]) return false;
         }
@@ -150,17 +150,24 @@ void GaHelper::attemptRules(Individual** population, int size)
     {
         Individual* currentIndividual = population[i];
 
+        DEBUG("START");
+        DEBUG("");
+
+        std::string cur = currentIndividual->getInitialState();
+
+        DEBUG("CURRENT INDIVIDUAL");
+        DEBUG(cur);
+        DEBUG("");
+
         for (int test = 0; test < 30 && !solutionFound; test++)
         {
-            std::vector<std::string> currentState = currentIndividual->initialState;
-            std::vector<std::string> nextState = currentIndividual->currentState;
-
-            int currStateIdx = 0;
-            int middleIdx = 0;
+            std::string currentState = currentIndividual->getInitialState();
+            auto nextState = currentIndividual->initialState;
+            std::string goalState = currentIndividual->getGoalState();
 
             for (int startIdx = 0; startIdx < currentState.size() && !solutionFound; startIdx++)
             {
-                auto window = GaHelper::getWindow(startIdx, currentState);
+                std::string window = GaHelper::getWindow(startIdx, currentState);
 
                 const int rule = std::stoi(window, nullptr, 2);
 
@@ -170,28 +177,35 @@ void GaHelper::attemptRules(Individual** population, int size)
 
                 int middleIdx = (startIdx + 2) % currentState.size();
 
-                if (middleIdx + currStateIdx >= 0 && middleIdx + currStateIdx < nextState.size())
+                switch(rule_to_perform)
                 {
-                    switch(rule_to_perform)
-                    {
-                        case 0:
-                        nextState[middleIdx + currStateIdx] = "0";
-                        break;
-                        case 1:
-                        nextState[middleIdx + currStateIdx] = "1";
-                        break;
-                        case 2:
-                        nextState.erase(nextState.begin() + middleIdx + currStateIdx);
-                        currStateIdx--;
-                        break;
-                        case 3:
-                        std::string val = currentState[middleIdx];
-                        nextState.insert(nextState.begin() + middleIdx + currStateIdx, val);
-                        currStateIdx++;
-                        break;
-                    }
+                    case 0:
+                    nextState[middleIdx][0] = "0";
+                    break;
+                    case 1:
+                    nextState[middleIdx][0] = "1";
+                    break;
+                    case 2:
+                    if (!nextState[middleIdx].empty()) nextState[middleIdx].erase(nextState[middleIdx].begin());
+                    break;
+                    case 3:
+                    char val = currentState[middleIdx];
+                    nextState[middleIdx].push_back(std::string(1,val));
+                    break;
+                }
 
-                    solutionFound = isGoalStateEqualToCurrentState(nextState, currentIndividual->goalState);
+                std::string nextStateStr = Individual::convertStateToString(nextState);
+                
+                DEBUG(rule_to_perform);
+                DEBUG(nextStateStr);
+
+                solutionFound = isGoalStateEqualToCurrentState(nextStateStr, goalState);
+
+                if (solutionFound) 
+                {
+                    currentIndividual->currentState = nextState;
+                    evaluateFitness(currentIndividual);
+                    break;
                 }
             }
 

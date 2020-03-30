@@ -8,7 +8,7 @@
 #define DEBUG(x)
 #endif
 
-Individual::Individual(unsigned int* rules, std::vector<std::string> initialState, std::vector<std::string> goalState)
+Individual::Individual(unsigned int* rules, std::vector<std::vector<std::string>> initialState, std::vector<std::vector<std::string>> goalState)
     : initialState(initialState), goalState(goalState), currentState(initialState)
 {
     for (int i = 0; i < 32; i++)
@@ -28,7 +28,7 @@ Individual::Individual(const Individual& individual)
 
     goalState = individual.goalState;
 
-    currentState = individual.initialState;
+    currentState = individual.currentState;
 
     fitness = individual.fitness;
 }
@@ -46,9 +46,39 @@ Individual& Individual::operator=(const Individual& individual)
 
         goalState = individual.goalState;
 
-        currentState = individual.initialState;
+        currentState = individual.currentState;
 
-        
+        fitness = individual.fitness;
     }
     return *this;
+}
+
+std::string Individual::getInitialState()
+{
+    return convertStateToString(initialState);
+}
+
+std::string Individual::getCurrentState()
+{
+    return convertStateToString(currentState);
+}
+
+std::string Individual::getGoalState()
+{
+    return convertStateToString(goalState);
+}
+
+std::string Individual::convertStateToString(std::vector<std::vector<std::string>> state)
+{
+    std::string res = "";
+
+    for (int i = 0; i < state.size(); i++)
+    {
+        for (int j = 0; j < state[i].size(); j++)
+        {
+            res += state[i][j];
+        }
+    }
+
+    return res;
 }
