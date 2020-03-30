@@ -50,7 +50,7 @@ void GA::run()
         DEBUG("Starting to initialize population")
         initializePopulation(population);
 
-        helper->attemptRules(population);
+        helper->attemptRules(population, NUM_INDIVIDUALS);
 
         DEBUG("Initialized population")
         helper->evaluatePopulation(population);
@@ -61,7 +61,7 @@ void GA::run()
         DEBUG(bestIndividualInit->fitness);
         #endif
 
-        for (generation = 0; generation < 10; generation++)
+        for (generation = 0; generation < 1000; generation++)
         {
             // Selecting parents for next generation
             helper->selectParents(matingPool, population);
@@ -69,7 +69,7 @@ void GA::run()
 
             helper->createOffsprings(offsprings, matingPool);
 
-            helper->attemptRules(offsprings);
+            helper->attemptRules(offsprings, LAMBDA);
 
             // Evaluating their fitness level
             helper->evaluatePopulation(offsprings, LAMBDA);
@@ -104,10 +104,9 @@ void GA::run()
             ans += bestIndividual ->currentState[i];
         }
         DEBUG(ans)
+        WAIT;
 
-        #if !PARAMETER_TUNING
         outputBestIndividual(bestIndividual);
-        #endif
 
         freePopulation(population);
 

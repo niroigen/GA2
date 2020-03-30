@@ -121,24 +121,10 @@ std::string GaHelper::getWindow(int startIdx, std::vector<std::string> currentSt
 {
     std::string res = "00000";
 
-    // DEBUG(startIdx)
-
     for (int i = 0; i < 5; i++)
     {
         res[i] = currentState[(startIdx + i) % currentState.size()][0];
     }
-
-//         DEBUG("inSIDE")
-//     std::string ans;
-
-//     for (int i = 0; i < currentState.size(); i++)
-//     {
-//         ans += currentState[i];
-//     }
-
-//     DEBUG(ans)
-
-// WAIT;
 
     return res;
 }
@@ -157,10 +143,10 @@ bool isGoalStateEqualToCurrentState(std::vector<std::string> currentState,std::v
     }
 }
 
-void GaHelper::attemptRules(Individual** population)
+void GaHelper::attemptRules(Individual** population, int size)
 {
     bool solutionFound = false;
-    for (int i = 0; i < NUM_INDIVIDUALS && !solutionFound; i++)
+    for (int i = 0; i < size && !solutionFound; i++)
     {
         Individual* currentIndividual = population[i];
 

@@ -3,7 +3,26 @@
 
 void outputBestIndividual(Individual* bestIndividual)
 {
+    std::string initialState = "";
+    std::string goalState = "";
+
+    for (int i = 0; i < 8; i++)
+    {
+        initialState += bestIndividual->initialState[i];
+        goalState += bestIndividual->goalState[i];
+    }
+
     Json::Value best;
+    best["Initial State"] = initialState;
+    best["Goal State"] = goalState;
+
+    best["rules"] = Json::Value(Json::arrayValue);
+    Json::Value &rules = best["rules"];
+
+    for (int i = 0; i < 32; i++)
+    {
+        rules[i] = bestIndividual->rules[i];
+    }
     // population["puzzle"] = obj["0"]["puzzle"];
     // best["length"] = bestIndividual->frameLength;
     // best["width"] = bestIndividual->frameWidth;
@@ -22,9 +41,9 @@ void outputBestIndividual(Individual* bestIndividual)
     //     puzzle[i][3] = bestIndividual->tiles[i].w;
     // }
 
-    // std::ofstream file_id;
-    // file_id.open("bestIndividual.json");
-    // Json::StyledWriter styledWriter;
-    // file_id << styledWriter.write(best);
-    // file_id.close();
+    std::ofstream file_id;
+    file_id.open("bestIndividual.json");
+    Json::StyledWriter styledWriter;
+    file_id << styledWriter.write(best);
+    file_id.close();
 }

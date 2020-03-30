@@ -47,6 +47,8 @@ Individual& Individual::operator=(const Individual& individual)
         goalState = individual.goalState;
 
         currentState = individual.initialState;
+
+        
     }
     return *this;
 }

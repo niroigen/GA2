@@ -39,7 +39,7 @@ struct GaHelper
     void performCrossover(Individual*, Individual*, std::uniform_int_distribution<>&);
     void performMutation(Individual*);
     static bool compareIndividual(const Individual*, const Individual*);
-    void attemptRules(Individual**);
+    void attemptRules(Individual**, int);
     static void performRule(Individual*, std::uint8_t, std::uint8_t, std::uint8_t);
     static std::string getWindow(int, std::vector<std::string>);
 };
