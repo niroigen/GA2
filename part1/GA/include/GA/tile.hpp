@@ -5,6 +5,7 @@
 struct Tile
 {
     unsigned int x, y, l, w;
+    float fitness;
     Tile(unsigned int x, unsigned int y, unsigned int l,
          unsigned int w) :
          x(x), y(y), l(l), w(w) {}
@@ -15,6 +16,7 @@ struct Tile
         y = tile.y;
         l = tile.l;
         w = tile.w;
+        fitness = tile.fitness;
 
         #if DEBUG
         std::cout << "Tile Copy Constructor"<< std::endl;
@@ -29,6 +31,7 @@ struct Tile
             y = tile.y;
             l = tile.l;
             w = tile.w;
+            fitness = tile.fitness;
         }
 
         #if DEBUG

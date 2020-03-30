@@ -12,17 +12,17 @@ void randomResetting(Individual *offspring, const float MUTATION_RATE)
         auto r2 = dist(eng);
         auto r3 = dist(eng);
 
-        if (r1 <= MUTATION_RATE)
+        if (r1 <= offspring->tiles[i].fitness + MUTATION_RATE)
         {
             offspring->tiles[i].x = distX(eng);
         }
 
-        if (r2 <= MUTATION_RATE)
+        if (r2 <= offspring->tiles[i].fitness + MUTATION_RATE)
         {
             offspring->tiles[i].y = distY(eng);
         }
 
-        if (r3 <= MUTATION_RATE)
+        if (r3 <= offspring->tiles[i].fitness + MUTATION_RATE)
         {
             auto temp = offspring->tiles[i].l;
             offspring->tiles[i].l = offspring->tiles[i].w;
