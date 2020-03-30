@@ -53,5 +53,5 @@ void defaultFitnessFunction(Individual* individual)
         }
     }
     
-    individual->fitness = fitness_table[8][8]* 0.4 + std::abs(int(currentState.length()) - 8) * 0.6;
+    individual->fitness = fitness_table[8][8];
 }
