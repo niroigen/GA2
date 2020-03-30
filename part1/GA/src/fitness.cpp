@@ -12,7 +12,7 @@
 void defaultFitnessFunction(Individual* individual)
 {
     int frame[individual->frameWidth][individual->frameLength];
-    std::vector<Tile*> unique[individual->frameWidth][individual->frameLength];
+    TileMatrix unique(individual->frameWidth, std::vector<std::vector<Tile*>>(individual->frameLength));
 
     for (int i = 0; i < individual->frameWidth; i++)
     {
