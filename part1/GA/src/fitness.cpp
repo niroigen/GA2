@@ -11,7 +11,7 @@
 
 void defaultFitnessFunction(Individual* individual)
 {
-    int frame[individual->frameWidth][individual->frameLength];
+    Matrix frame(individual->frameWidth, std::vector<int>(individual->frameLength));
     TileMatrix unique(individual->frameWidth, std::vector<std::vector<Tile*>>(individual->frameLength));
 
     for (int i = 0; i < individual->frameWidth; i++)
@@ -24,18 +24,7 @@ void defaultFitnessFunction(Individual* individual)
 
     for (int i = 0; i < individual->size; i++)
     {
-        int overlap = 0;
-        for (int j = individual->tiles[i].y; j < individual->tiles[i].y + individual->tiles[i].w; j++)
-        {
-            for (int k = individual->tiles[i].x; k < individual->tiles[i].x + individual->tiles[i].l; k++)
-            {
-                if (k < individual->frameLength && j < individual->frameWidth)
-                {
-                    frame[j][k] = 0;
-                    unique[j][k].push_back(&individual->tiles[i]);
-                }
-            }
-        }
+        calculateOverlap(individual->tiles[i], frame, unique, individual->frameLength, individual->frameWidth);
     }
 
     unsigned int free_space = 0;
@@ -61,4 +50,20 @@ void defaultFitnessFunction(Individual* individual)
     double area = individual->frameLength * individual->frameWidth;
 
     individual->fitness = (free_space * 1.0)/area;//+ (((unique_space * 1.0)/area) * 0.01));
+}
+
+void calculateOverlap(Tile& tile, Matrix& frame, TileMatrix& unique, const int frameLength, const int frameWidth)
+{
+    int overlap = 0;
+    for (int j = tile.y; j < tile.y + tile.w; j++)
+    {
+        for (int k = tile.x; k < tile.x + tile.l; k++)
+        {
+            if (k < frameLength && j < frameWidth)
+            {
+                frame[j][k] = 0;
+                unique[j][k].push_back(&tile);
+            }
+        }
+    }
 }
