@@ -1,6 +1,7 @@
 #include "GA/ga.hpp"
 
 #define DEBUG_MODE 1
+#define LOG(x) std::cout << x << std::endl;
 
 #if DEBUG_MODE
 #define DEBUG(x) std::cout << x << std::endl;
@@ -43,89 +44,69 @@ void GA::freeOffsprings(Individual** offsprings)
 
 void GA::run()
 {
-    #if PARAMETER_TUNING
-    for (int it = 0; it < 10; it++)
-    {
+    DEBUG("Starting to initialize population")
+    initializePopulation(population);
+
+    helper->attemptRules(population, NUM_INDIVIDUALS);
+
+    DEBUG("Initialized population")
+    helper->evaluatePopulation(population);
+
+    #if DEBUG_MODE
+    Individual* bestIndividualInit = GaHelper::findBestIndividual(population, NUM_INDIVIDUALS);
+    DEBUG("BEST INDIVIDUAL");
+    DEBUG(bestIndividualInit->fitness);
     #endif
-        DEBUG("Starting to initialize population")
-        initializePopulation(population);
 
-        helper->attemptRules(population, NUM_INDIVIDUALS);
+    for (generation = 0; generation < 1000; generation++)
+    {
+        // Selecting parents for next generation
+        helper->selectParents(matingPool, population);
+        // Creating offsprings off of the potential parents
 
-        DEBUG("Initialized population")
-        helper->evaluatePopulation(population);
+        helper->createOffsprings(offsprings, matingPool);
 
-        #if DEBUG_MODE
-        Individual* bestIndividualInit = GaHelper::findBestIndividual(population, NUM_INDIVIDUALS);
-        DEBUG("BEST INDIVIDUAL");
-        DEBUG(bestIndividualInit->fitness);
-        #endif
+        helper->attemptRules(offsprings, LAMBDA);
 
-        for (generation = 0; generation < 1000; generation++)
-        {
-            // Selecting parents for next generation
-            helper->selectParents(matingPool, population);
-            // Creating offsprings off of the potential parents
+        // Evaluating their fitness level
+        helper->evaluatePopulation(offsprings, LAMBDA);
 
-            helper->createOffsprings(offsprings, matingPool);
-
-            helper->attemptRules(offsprings, LAMBDA);
-
-            // Evaluating their fitness level
-            helper->evaluatePopulation(offsprings, LAMBDA);
-
-            // Freeing the population
-            freePopulation(population);
-
-            // Sorting the by fitness
-            std::sort(offsprings, offsprings+LAMBDA, GaHelper::compareIndividual);
-
-            // Replace the population with NUM_INDIVIDUAL's best offspring
-            helper->survivorSelection(population, offsprings);
-
-            // Freeing the offspring that will no longer be used
-            freeOffsprings(offsprings);
-
-            #if DEBUG_MODE
-            Individual* bestIndividualInit = population[0];
-            DEBUG(bestIndividualInit->fitness);
-
-            std::string ans;
-
-            for (int i = 0; i < bestIndividualInit->currentState.size(); i++)
-            {
-                for (int j = 0; j < bestIndividualInit->currentState[i].size(); j++)
-                {
-                    ans += bestIndividualInit ->currentState[i][j];
-                }
-            }
-
-            DEBUG(ans);
-
-            if(bestIndividualInit->fitness == 0) break;
-            #endif
-        }
-
-        Individual* bestIndividual = helper->findBestIndividual(population, NUM_INDIVIDUALS);
-        std::cout << bestIndividual->fitness << ',' << std::flush;
-
-        std::string ans;
-
-        for (int i = 0; i < bestIndividual->currentState.size(); i++)
-        {
-            for (int j = 0; j < bestIndividual->currentState[i].size(); j++)
-            {
-                ans += bestIndividual->currentState[i][j];
-            }
-        }
-        DEBUG(ans)
-        WAIT;
-
-        outputBestIndividual(bestIndividual);
-
+        // Freeing the population
         freePopulation(population);
 
-    #if PARAMETER_TUNING
+        // Sorting the by fitness
+        std::sort(offsprings, offsprings+LAMBDA, GaHelper::compareIndividual);
+
+        // Replace the population with NUM_INDIVIDUAL's best offspring
+        helper->survivorSelection(population, offsprings);
+
+        // Freeing the offspring that will no longer be used
+        freeOffsprings(offsprings);
+
+        #if DEBUG_MODE
+        Individual* bestIndividualInit = population[0];
+        DEBUG(bestIndividualInit->fitness);
+
+        std::string ans = bestIndividualInit->getCurrentState();
+
+        DEBUG(ans);
+
+        if(bestIndividualInit->fitness == 0) break;
+        #endif
     }
-    #endif
+
+    Individual* bestIndividual = helper->findBestIndividual(population, NUM_INDIVIDUALS);
+    std::cout << bestIndividual->fitness << ',' << std::flush;
+
+    std::string ans = bestIndividual->getCurrentState();
+    DEBUG(ans)
+
+    DEBUG("Has taken " + std::to_string(generation) + " generations to complete")
+    WAIT;
+
+    outputBestIndividual(bestIndividual);
+
+    LOG("Found best individual, please check file");
+
+    freePopulation(population);
 }
