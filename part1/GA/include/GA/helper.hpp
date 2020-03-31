@@ -3,6 +3,8 @@
 #include <iostream>
 #include <random>
 #include <algorithm>
+#include <vector>
+#include <thread>
 #include "GA/individual.hpp"
 #include "GA/crossover.hpp"
 #include "GA/mutation.hpp"
@@ -25,7 +27,7 @@ struct GaHelper
          : MU(MU), LAMBDA(LAMBDA), k(k), CROSSOVER_RATE(CROSSOVER_RATE), MUTATION_RATE(MUTATION_RATE)
     {}
 
-    void evaluateFitness(Individual*);
+    static void evaluateFitness(Individual*);
     void evaluatePopulation(Individual**, int size = NUM_INDIVIDUALS);
     void selectParents(Individual**, Individual**);
     static void pickRandomIndividuals(Individual**, Individual**, int);
