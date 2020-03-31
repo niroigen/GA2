@@ -10,9 +10,16 @@
 
 void GaHelper::evaluatePopulation(Individual** population, int size)
 {
+    std::vector<std::thread> threads;
     for (int i = 0; i < size; i++)
     {
-        evaluateFitness(population[i]);
+        threads.push_back(std::thread(evaluateFitness, population[i]));
+    }
+
+    for (std::thread & th : threads)
+    {
+        if (th.joinable())
+            th.join();
     }
 }
 
