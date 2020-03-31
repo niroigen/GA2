@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <cmath>
 #include "GA/tile.hpp"
 
 struct Individual
@@ -17,9 +18,10 @@ struct Individual
     Individual(const Individual&);
     Individual& operator=(const Individual&);
     ~Individual();
-
+    
 
     bool isIdxListed(int);
     bool areTilesEqual(const Tile&, const Tile&, const int);
     int findExistingTile(const Tile&);
+    static float geneticDistance(Individual*, Individual*);
 };

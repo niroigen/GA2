@@ -4,6 +4,7 @@
 
 #if DEBUG_MODE
 #define DEBUG(x) std::cout << x << std::endl;
+#define WAIT std::cin.get();
 #else
 #define DEBUG(x)
 #endif
@@ -112,6 +113,24 @@ int Individual::findExistingTile(const Tile &tile)
 
     // Should NEVER happen
     return -1;
+}
+
+float Individual::geneticDistance(Individual* i1, Individual* i2)
+{
+    float distance = 0;
+    double sum = 0;
+
+    for (int i = 0; i < i1->size; i++)
+    {
+        Tile t1 = i1->tiles[i1->indices[i]];
+        Tile t2 = i2->tiles[i2->indices[i]];
+
+        sum += std::pow((t1.x - t2.x) + (t1.y - t2.y) + (t1.l - t2.l) + (t1.w - t2.w), 2);
+    };
+
+    distance = std::sqrt(sum);
+
+    return distance;
 }
 
 Individual::~Individual()

@@ -4,8 +4,10 @@
 
 #if DEBUG_MODE
 #define DEBUG(x) std::cout << x << std::endl;
+#define WAIT std::cin.get();
 #else
 #define DEBUG(x)
+#define WAIT
 #endif
 
 void GaHelper::evaluatePopulation(Individual** population, int size)
@@ -57,7 +59,7 @@ Individual* GaHelper::findBestIndividual(Individual** individuals, int numIndivi
 {
     unsigned int bestIdx = 0;
     float bestFitness = individuals[0]->fitness;
-    for (int i = 1; i < numIndividuals; i++)
+    for (int i = 0; i < numIndividuals; i++)
     {
         if(individuals[i]->fitness < bestFitness)
         {
@@ -76,12 +78,9 @@ void GaHelper::selectParents(Individual** matingPool, Individual** population)
 
 Individual* GaHelper::getRandomParent(Individual** matingPool)
 {
-    DEBUG("Getting random parent")
-
     std::uniform_int_distribution<> distr(0, MU - 1);
 
     Individual* test = matingPool[distr(eng)];
-    DEBUG(test->size);
 
     return matingPool[distr(eng)];
 }
@@ -91,46 +90,46 @@ bool GaHelper::compareIndividual(const Individual* i1, const Individual* i2)
     return i1->fitness < i2->fitness;
 }
 
+bool GaHelper::areSameSpecies(Individual* i1, Individual* i2)
+{
+    float distance = Individual::geneticDistance(i1, i2);
+    if (distance != 0 && distance < maxDistance) maxDistance = distance;
+
+    DEBUG(std::to_string(distance) + " " + std::to_string(std::sqrt(maxDistance)));
+
+    return Individual::geneticDistance(i1, i2) < 130;
+}
+
+
 void GaHelper::createOffsprings(Individual** offsprings, Individual** matingPool)
 {
-    DEBUG("Starting the creation of offsprings")
     int i = 0;
-
-    DEBUG("Initializing the randomness")
 
     std::uniform_real_distribution<> dist(0, 1);
     
-    DEBUG("Mating pool")
     std::uniform_int_distribution<> distr(0, matingPool[0]->size - 1);
 
     while(i < LAMBDA)
     {
-        DEBUG("Getting random parents");
+        Individual* parent1;
+        Individual* parent2;
 
-        Individual* parent1 = GaHelper::getRandomParent(matingPool);
-        Individual* parent2 = GaHelper::getRandomParent(matingPool);
+        do 
+        {
+            parent1 = GaHelper::getRandomParent(matingPool);
+            parent2 = GaHelper::getRandomParent(matingPool);
 
-        DEBUG(matingPool[0]->size)
-        DEBUG(parent1->size)
+            DEBUG("PICKING PARENT")
+        } while(!areSameSpecies(parent1, parent2));
 
-        DEBUG("Got random parents");
+        DEBUG("DONE");
+        WAIT;
 
         float r = dist(eng);
 
-        DEBUG("Creating offsprings from parent");
-
-        DEBUG(parent1)
-
-        DEBUG(parent1->size)
-        DEBUG(parent2->size)
-
         Individual* offspring1 = new Individual(*parent1);
 
-        DEBUG("Created first offspring");
-
         Individual* offspring2 = new Individual(*parent2);
-
-        DEBUG("Created offsprings from parent");
 
         if (r <= CROSSOVER_RATE)
         {
