@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10.2)
+cmake_minimum_required(VERSION 3.5.1)
 project(Json)
 
 add_library(${PROJECT_NAME} src/jsonReader.cpp src/jsonWriter.cpp)
@@ -11,3 +11,5 @@ target_include_directories( ${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
     sub::lib2
 )
+
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 11)
