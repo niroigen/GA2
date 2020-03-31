@@ -1,6 +1,6 @@
 #include "GA/ga.hpp"
 
-#define DEBUG_MODE 0
+#define DEBUG_MODE 1
 
 #if DEBUG_MODE
 #define DEBUG(x) std::cout << x << std::endl;
@@ -56,23 +56,16 @@ void GA::run()
         DEBUG(bestIndividualInit->fitness);
         #endif
 
-        for (generation = 0; generation < 1000; generation++)
+        for (generation = 0; generation < 500; generation++)
         {
-            DEBUG("Selecting parents");
             // Selecting parents for next generation
             helper->selectParents(matingPool, population);
-            DEBUG(matingPool[0]->size);
-            DEBUG("Selected parents");
 
-            DEBUG("Creating offsprings");
             // Creating offsprings off of the potential parents
             helper->createOffsprings(offsprings, matingPool);
-            DEBUG("Created offsprings");
 
-            DEBUG("Evaluating population");
             // Evaluating their fitness level
             helper->evaluatePopulation(offsprings, LAMBDA);
-            DEBUG("Evaluated population");
 
             // Freeing the population
             freePopulation(population);
@@ -86,7 +79,9 @@ void GA::run()
             // Freeing the offspring that will no longer be used
             freeOffsprings(offsprings);
 
-            #if DEBUG
+            if (population[0]->fitness < 0.02) break;
+
+            #if DEBUG_MODE
             Individual* bestIndividualInit = population[0];
             std::cout << bestIndividualInit->fitness << '\n';
             #endif

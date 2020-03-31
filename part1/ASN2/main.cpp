@@ -11,7 +11,7 @@ int generation;
 
 int main()
 {
-    GA ga1(75, 6 * 75, 65, 0.65, 0.05);
+    GA ga1(30, 7 * 30, 10, 0.65, 0.05);
 
     ga1.run();
 }
