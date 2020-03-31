@@ -15,6 +15,8 @@ struct GA
     const float CROSSOVER_RATE;
     const float MUTATION_RATE;
     int generation = 0;
+    float bestFitness = 1;
+    int stagnantCounter = 0;
     GaHelper* helper;
 
     Individual** population;
@@ -26,6 +28,10 @@ struct GA
     
     GA(const int, const int, const int, const float, const float);
     void run();
+    bool isComplete()
+    {
+        return stagnantCounter >= 500;
+    }
     ~GA()
     {
         delete helper;

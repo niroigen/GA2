@@ -5,6 +5,8 @@
 #include <algorithm>
 #include <vector>
 #include <thread>
+#include <limits>
+#include <cmath>
 #include "GA/individual.hpp"
 #include "GA/crossover.hpp"
 #include "GA/mutation.hpp"
@@ -22,6 +24,7 @@ struct GaHelper
     const int k;
     const float CROSSOVER_RATE;
     const float MUTATION_RATE;
+    float maxDistance = std::numeric_limits<float>::max();
 
     GaHelper(const int MU, const int LAMBDA, const int k, const float CROSSOVER_RATE, const float MUTATION_RATE)
          : MU(MU), LAMBDA(LAMBDA), k(k), CROSSOVER_RATE(CROSSOVER_RATE), MUTATION_RATE(MUTATION_RATE)
@@ -38,4 +41,10 @@ struct GaHelper
     void performCrossover(Individual*, Individual*, std::uniform_int_distribution<>&);
     void performMutation(Individual*);
     static bool compareIndividual(const Individual*, const Individual*);
+    bool areSameSpecies(Individual*, Individual*);
+
+    void setMaxDistance() 
+    {
+        maxDistance = std::numeric_limits<float>::max();
+    }
 };

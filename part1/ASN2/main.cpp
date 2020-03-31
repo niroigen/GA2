@@ -1,4 +1,6 @@
 #include <chrono>
+#include <vector>
+#include <thread>
 #include "GA/ga.hpp"
 
 #define DEBUG 1
@@ -12,6 +14,5 @@ int generation;
 int main()
 {
     GA ga1(30, 7 * 30, 10, 0.65, 0.05);
-
     ga1.run();
 }

@@ -4,6 +4,7 @@
 
 #if DEBUG_MODE
 #define DEBUG(x) std::cout << x << std::endl;
+#define WAIT std::cin.get();
 #else
 #define DEBUG(x)
 #endif
@@ -56,7 +57,7 @@ void GA::run()
         DEBUG(bestIndividualInit->fitness);
         #endif
 
-        for (generation = 0; generation < 500; generation++)
+        do
         {
             // Selecting parents for next generation
             helper->selectParents(matingPool, population);
@@ -79,13 +80,21 @@ void GA::run()
             // Freeing the offspring that will no longer be used
             freeOffsprings(offsprings);
 
-            if (population[0]->fitness < 0.02) break;
+            if (population[0]->fitness < 0.005) break;
 
-            #if DEBUG_MODE
             Individual* bestIndividualInit = population[0];
-            std::cout << bestIndividualInit->fitness << '\n';
-            #endif
-        }
+            if (bestIndividualInit->fitness < bestFitness) 
+            {
+                bestFitness = bestIndividualInit->fitness;
+                stagnantCounter = 0;
+            }
+            else
+            {
+                stagnantCounter++;
+            }
+
+            DEBUG(bestIndividualInit->fitness);
+        } while(!isComplete());
 
         Individual* bestIndividual = helper->findBestIndividual(population, NUM_INDIVIDUALS);
         std::cout << bestIndividual->fitness << ',' << std::flush;
