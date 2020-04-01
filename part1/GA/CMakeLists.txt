@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10.2)
+cmake_minimum_required(VERSION 3.5.1)
 project(GA)
 
 add_library(${PROJECT_NAME} src/individual.cpp src/helper.cpp src/crossover.cpp src/mutation.cpp src/fitness.cpp
@@ -14,3 +14,5 @@ target_link_libraries(${PROJECT_NAME}
     jsoncpp
     pthread
 )
+
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 11)

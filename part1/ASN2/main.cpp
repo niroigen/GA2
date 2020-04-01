@@ -4,6 +4,7 @@
 #include <chrono>
 #include <vector>
 #include <thread>
+#include <random>
 #include "GA/ga.hpp"
 
 #define DEBUG 1
