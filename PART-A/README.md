@@ -21,11 +21,8 @@ Once you are in the docker container, to head into the source code perform the f
 
 
 
-
-
-## Running Part 1
 ### Step 1: Jump into the build directory
-To run the part 1 algorithm, you would have to go into the directory `part1/build`
+To run the part 1 algorithm, you would have to go into the directory `cd build`
 
 ### Step 2: Prepare to create an executable using CMAKE
 Next you would need to build the project using CMAKE
@@ -36,26 +33,4 @@ Now you would have to create the executable file
 `make`
 
 ### Step 4: Run program
-`./ASN/ASN`
-
-
-
-
-
-
-
-
-## Running Part 2
-### Step 1: Jump into the build directory
-To run the part 1 algorithm, you would have to go into the directory `part2/build`
-
-### Step 2: Prepare to create an executable using CMAKE
-Next you would need to build the project using CMAKE
-`cmake ..`
-
-### Step 3: Create an executable for Part 1
-Now you would have to create the executable file
-`make`
-
-### Step 4: Run program
-`./ASN/ASN`
+`./ASN2/ASN2`
